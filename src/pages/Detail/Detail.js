@@ -57,6 +57,10 @@ const Detail = () => {
   
   const handleClickEpisode = (episodeId, index) => {
     navigate(`/detail/${category}/${id}/${episodeId}`)
+    getMovieDetail({
+      path: `movieDrama/get`,
+      params,
+    })
     setEpisodeIndex(index)
     handleDispatchMedia()
   }

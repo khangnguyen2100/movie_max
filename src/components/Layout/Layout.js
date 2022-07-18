@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
   return (
     <Box  minHeight={'100vh'} position={'relative'} fontFamily="body" fontSize='16px' maxW='full' color='textColor' display={'flex'} flexDirection={'column'}
       backgroundColor={'bgColor'} 
-      bg={'linear-gradient(170deg,hsl(219, 41%, 15%), hsl(219, 41%, 5%))'}
+      bg={'linear-gradient(170deg,hsl(219, 41%, 10%), hsl(219, 41%, 3%))'}
     >
       {/* navigation layout */}
       <Box zIndex='100' position={'relative'} h='55px' bg={'bgColor'}
@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         <Box
           bg={'bgColor'} 
           position='fixed' top='0' left='0' right='0' w='full' zIndex='100'
-          boxShadow='rgba(0, 0, 0, 0.35) 0px 5px 15px'
+          boxShadow='rgba(0, 0, 0, 0.15) 0px 5px 15px'
         > 
           <Box
             px={{
