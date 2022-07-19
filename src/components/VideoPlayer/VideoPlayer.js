@@ -46,6 +46,8 @@ import {
   MenuRadioGroup,
   Settings,
 } from "@vime/react";
+import { Circles } from 'react-loader-spinner'
+
 import { movieDetailSelector } from "../../redux/selector";
 import { getMovieMedia } from "../../services/movieMediaSlice";
 function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handleClickEpisode,handleDispatchMedia }) {
@@ -69,7 +71,21 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
   const [subtitlesIndex, setSubtitlesIndex] = useState(0);
   const [valueRate, setValueRate] = useState("1");
   const [definition, setDefinition] = useState(definitionList[0].code);
-
+  function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
   const handlePlayerPress = (e) => {
     if(document.activeElement.tagName !== "INPUT") {
       switch (e.key) {
@@ -117,16 +133,16 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
       }
     },
     seekForward: function () {
-      setCurrentTime(player.current.currentTime + 10);
+      setCurrentTime(player?.current?.currentTime + 10);
     },
     seekBackward: function () {
-      setCurrentTime(player.current.currentTime - 10);
+      setCurrentTime(player?.current?.currentTime - 10);
     },
     increaseVolume: function () {
-      setVolume(player.current.volume + 10);
+      setVolume(player?.current?.volume + 10);
     },
     decreaseVolume: function () {
-      setVolume(player.current.volume - 10);
+      setVolume(player?.current?.volume - 10);
     },
     muteVolume: function () {
       setIsMuted((isMuted) => !isMuted);
@@ -146,7 +162,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
     },
     onTimeUpdate: function (event) {
       setCurrentTime(event.detail);
-      document.cookie = "time="+currentTime;
+      document.cookie = `currentTime=${event.detail}`;
     },
     onSubtitlesIndexChange: function (event) {
       setSubtitlesIndex(event.target.value);
@@ -177,7 +193,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
       );
     },
     onPlaybackEnded: function () {
-      player.current.exitFullscreen()
+      player?.current?.exitFullscreen()
 
       const length = movieDetail?.episodeVo?.length
       if(movieDetail?.episodeVo?.[length-1].id !== +episodeId ) setModalOpen(!modalOpen);
@@ -193,8 +209,11 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
     onError : function () {
       handleDispatchMedia()
       console.log('reload...');
+      console.log('Sorry if you get this error. This happen because this is not my server. I tried my best but I cannot do anything about this error');
+      setCurrentTime(+getCookie('currentTime'))
     }
   };
+
   useEffect(() => {
     subtitlesLink?.forEach((sub, i) => {
       if (sub.languageAbbr === "vi") {
@@ -228,7 +247,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
         ref={player}
         onClick={(e) => app.handleClickPlayer(e)}
       >
-        <Hls onVmError={() => app.onError()} crossOrigin="anonymous" poster={poster} preload="auto">
+        <Hls onVmError={() => app.onError()} crossOrigin="anonymous" poster={poster} preload="none">
           <source type="application/x-mpegURL" data-src={videoSrc} />
           {subtitlesLink?.map((sub, i) => {
             return (
@@ -319,7 +338,9 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
               </MenuRadioGroup>
             </Submenu>
           </Settings>
-          <Spinner />
+          <Spinner
+            showWhenMediaLoading={true}
+          />
           <DblClickFullscreen />
           <ClickToPlay />
           <Poster />
