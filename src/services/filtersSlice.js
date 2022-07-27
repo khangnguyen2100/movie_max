@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import fetchApi, { postfetchApi } from "./fetchApi";
+import fetchApi, { postFetchApi } from "./fetchApi";
 const initialState = {
   filtersValue : {
     type : {
@@ -70,7 +70,7 @@ export const getSearchFiltersApi = createAsyncThunk(
 export const postSearchFiltersApi = createAsyncThunk(
   'search/postApi',
   async (payload) => {
-    let res = await postfetchApi(payload)
+    let res = await postFetchApi(payload)
     return res.data.data
   }
 )

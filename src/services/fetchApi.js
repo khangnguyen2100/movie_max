@@ -1,10 +1,10 @@
 import axios from "axios";
 const baseUrl = "https://ga-mobile-api.loklok.tv/cms/app/"
 let headers = {
-  lang : 'en',
+  lang : 'vi',
   versioncode : 11,
   clienttype : 'ios_jike_default',
-  deviceid : "",
+  deviceid : "",  
 }
 const fetchApi = (data) => {
   return axios.get( `${baseUrl}${data.path}`, {
@@ -13,7 +13,7 @@ const fetchApi = (data) => {
   })
 }
 
-export const postfetchApi = (data) => {
+export const postFetchApi = (data) => {
   return axios.post( 
     `${baseUrl}${data.path}`,
     data.params,

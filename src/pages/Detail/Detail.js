@@ -150,6 +150,38 @@ const Detail = () => {
                 </Breadcrumb>
               </Flex>
             </Box>
+            <Box fontSize={{
+              base : 'xs',
+              md : 'sm',
+              lg : 'lg'
+            }}>
+              <Flex align="center">
+                <Text color={"textColor"} mr="10px">
+                  Definitions :
+                </Text>
+                <Breadcrumb
+                  separator=","
+                  spacing="5px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-start"
+                >
+                  {movieDetail?.episodeVo?.[episodeIndex]?.definitionList?.map((definition, i) => {
+                    return (
+                      <BreadcrumbItem key={i}>
+                        <Box
+                          rounded={'5px'} p='5px 15px' bgColor={'bgColor'}
+                          color={(definition.description === '1080P') && 'primaryColor'}
+                          fontWeight={(definition.description === '1080P') && '600'}
+                        >
+                          {definition.description}
+                        </Box>
+                      </BreadcrumbItem>
+                    );
+                  })}
+                </Breadcrumb>
+              </Flex>
+            </Box>
           </Box>
 
           {/* video render */}

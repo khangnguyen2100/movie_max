@@ -46,7 +46,6 @@ import {
   MenuRadioGroup,
   Settings,
 } from "@vime/react";
-import { Circles } from 'react-loader-spinner'
 
 import { movieDetailSelector } from "../../redux/selector";
 import { getMovieMedia } from "../../services/movieMediaSlice";
@@ -71,21 +70,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
   const [subtitlesIndex, setSubtitlesIndex] = useState(0);
   const [valueRate, setValueRate] = useState("1");
   const [definition, setDefinition] = useState(definitionList[0].code);
-  function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
+  
   const handlePlayerPress = (e) => {
     if(document.activeElement.tagName !== "INPUT") {
       switch (e.key) {
@@ -162,7 +147,9 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
     },
     onTimeUpdate: function (event) {
       setCurrentTime(event.detail);
-      document.cookie = `currentTime=${event.detail}`;
+      if(event.detail !== 0) {
+        document.cookie = `currentTime=${event.detail}`;
+      }
     },
     onSubtitlesIndexChange: function (event) {
       setSubtitlesIndex(event.target.value);
@@ -179,7 +166,8 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
     onDefinitionChange: function (event) {
       setDefinition(event.target.value);
       const episodeIdCurrent =
-        episodeId !== 0 ? episodeId : movieDetail?.episodeVo?.[0]?.id;
+      episodeId !== 0 ? episodeId : movieDetail?.episodeVo?.[0]?.id;
+      
       dispatch(
         getMovieMedia({
           path: `media/previewInfo`,
@@ -191,6 +179,8 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
           },
         })
       );
+
+      // setCurrentTime(+app.getCookie('currentTime'))
     },
     onPlaybackEnded: function () {
       player?.current?.exitFullscreen()
@@ -209,10 +199,30 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
     onError : function () {
       handleDispatchMedia()
       console.log('reload...');
-      console.log('Sorry if you get this error. This happen because this is not my server. I tried my best but I cannot do anything about this error');
-      setCurrentTime(+getCookie('currentTime'))
+      // console.log('Sorry if you get this error. This happen because this is not my server. I tried my best but I cannot do anything about this error');
+      // setCurrentTime(+app.getCookie('currentTime'))
+    },
+    getCookie : function (cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
     }
   };
+
+  useEffect(() => {
+    document.cookie = 'currentTime=0'
+    console.log(app.getCookie('currentTime'));
+  },[id,episodeId])
 
   useEffect(() => {
     subtitlesLink?.forEach((sub, i) => {
@@ -221,6 +231,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
       }
     });
   }, [subtitlesLink]);
+
   useEffect(() => {
     window.addEventListener("keydown", (e) => handlePlayerPress(e));
     return () =>
@@ -238,6 +249,12 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
           maxHeight : '100%',
           maxWidth : "100%"
         }}
+        onVmPlaybackReady={() => {
+          setCurrentTime(+app.getCookie('currentTime'))
+          if(!playing) setPlaying(true)
+          
+        }}
+
         volume={volume}
         playbackRate={valueRate}
         currentTime={currentTime}

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { postfetchApi } from "./fetchApi";
+import { postFetchApi } from "./fetchApi";
 
 const initialState = {
   value : {
@@ -38,14 +38,14 @@ export default searchKeyWordsSlice
 export const searchKeyWords = createAsyncThunk(
   'search/v1/searchWithKeyWord',
   async (payload) => {
-    let res = await postfetchApi(payload)
+    let res = await postFetchApi(payload)
     return res.data.data
   }
 )
 export const searchTopKeyWords = createAsyncThunk(
   'search/searchTopKeyWords',
   async (payload) => {
-    let res = await postfetchApi(payload)
+    let res = await postFetchApi(payload)
     return res.data.data
   }
 )
