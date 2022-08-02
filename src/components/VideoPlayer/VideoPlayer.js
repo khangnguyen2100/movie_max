@@ -49,7 +49,7 @@ import {
 
 import { movieDetailSelector } from "../../redux/selector";
 import { getMovieMedia } from "../../services/movieMediaSlice";
-function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handleClickEpisode,handleDispatchMedia }) {
+function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handleClickEpisode }) {
   const player = useRef();
   const dispatch = useDispatch();
   const params = useParams();
@@ -179,8 +179,19 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
           },
         })
       );
-
-      // setCurrentTime(+app.getCookie('currentTime'))
+    },
+    handleDispatchMedia : function() {
+      dispatch(
+        getMovieMedia({
+          path: `media/previewInfo`,
+          params: {
+            category,
+            contentId: id,
+            episodeId: episodeId !== 0 ?  episodeId : movieDetail?.episodeVo?.[0]?.id,
+            definition: definition,
+          },
+        })
+      );
     },
     onPlaybackEnded: function () {
       player?.current?.exitFullscreen()
@@ -196,11 +207,13 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
         }
       })
     },
-    onError : function () {
-      handleDispatchMedia()
-      console.log('reload...');
-      // console.log('Sorry if you get this error. This happen because this is not my server. I tried my best but I cannot do anything about this error');
-      // setCurrentTime(+app.getCookie('currentTime'))
+    onError : function (info) {
+      const type = info.detail.data.type
+      if(type !== 'mediaError') {
+        app.handleDispatchMedia()
+        console.log('RELOAD...');
+      }
+      
     },
     getCookie : function (cname) {
       let name = cname + "=";
@@ -221,7 +234,6 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
 
   useEffect(() => {
     document.cookie = 'currentTime=0'
-    console.log(app.getCookie('currentTime'));
   },[id,episodeId])
 
   useEffect(() => {
@@ -252,7 +264,6 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
         onVmPlaybackReady={() => {
           setCurrentTime(+app.getCookie('currentTime'))
           if(!playing) setPlaying(true)
-          
         }}
 
         volume={volume}
@@ -264,7 +275,7 @@ function VideoPlayer({ videoSource, poster, subtitlesLink, definitionList, handl
         ref={player}
         onClick={(e) => app.handleClickPlayer(e)}
       >
-        <Hls onVmError={() => app.onError()} crossOrigin="anonymous" poster={poster} preload="none">
+        <Hls onVmError={(a,b) => app.onError(a,b)} crossOrigin="anonymous" poster={poster} preload="none">
           <source type="application/x-mpegURL" data-src={videoSrc} />
           {subtitlesLink?.map((sub, i) => {
             return (

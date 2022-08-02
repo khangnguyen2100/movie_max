@@ -36,7 +36,7 @@ const Footer = () => {
           <Link to='/'>Home</Link>
         </Box>
         <Box  color='textColor' _hover={{color:'primaryColor'}}>
-          <Link to='/all'>Find your movie</Link>
+          <Link to='/filters'>Find your movie</Link>
         </Box>
       </HStack>
       <Box  width={{

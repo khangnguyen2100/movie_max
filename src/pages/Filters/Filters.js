@@ -6,11 +6,10 @@ import { Center } from "@chakra-ui/react";
 import FilterContainer from "../../components/FilterContainer/FilterContainer";
 import { searchFiltersSelector, filtersSelector } from "../../redux/selector";
 import {postSearchFiltersApi,} from "../../services/filtersSlice";
-import { handleConvertParams } from "../../utils/filterConfig";
 import Loading from "../../components/Loading/Loading";
 import ListFilmLayout from "../../components/Layout/ListFilmLayout";
 
-const All = () => {
+const Filters = () => {
   const dispatch = useDispatch();
   const searchData = useSelector(searchFiltersSelector);
   const filtersSelectorData = useSelector(filtersSelector)
@@ -29,7 +28,7 @@ const All = () => {
         path: "search/v1/search",
         params: {
           size: searchDataLength,
-          ...handleConvertParams(filtersSelectorData),
+          ...filtersSelectorData,
         },
       })
     );
@@ -54,4 +53,4 @@ const All = () => {
   );
 };
 
-export default All;
+export default Filters;

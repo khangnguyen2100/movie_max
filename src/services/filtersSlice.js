@@ -2,36 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fetchApi, { postFetchApi } from "./fetchApi";
 const initialState = {
   filtersValue : {
-    type : {
-      value : 'TV Series',
-      idFilterValue : 0
-    },
-    regions : {
-      id : 0,
-      value : 'All regions', 
-      idFilterValue : 0
-    },
-    categories : {
-      id : 1,
-      value : 'All Categories',
-      idFilterValue : 0,
-    },
-    timePeriods : {
-      id : 2,
-      value : 'All Time Periods',
-      idFilterValue : 0
-    },
-    subtitles : {
-      id : 3,
-      value :  'All Subtitles',
-      idFilterValue : 0,
-    },
-    recent : {
-      id : 4,
-      value :  'Recent',
-      idFilterValue : 0
-    },
+    "params": "",
+    "area": "",
+    "category": "",
+    "year": "",
+    "subtitles": "",
+    "order": "up"
   },
+  filtersConfig : [],
   searchData : {},
   status : 'idle'
 }
@@ -40,15 +18,22 @@ const filtersSlice = createSlice({
   initialState,
   reducers  : {
     updateFilters : (state, action) => {
-      const {payload : {filterName, value, idFilterValue}} = action
-      state.filtersValue[filterName].value = value
-      
-      state.filtersValue[filterName].idFilterValue = idFilterValue
-
-    } 
+      state.filtersValue = {
+        ...state.filtersValue,
+        ...action.payload
+      }
+    }
   },
   extraReducers : (builder) => {
     builder
+      .addCase(getFiltersConfig.pending , (state) => {
+        state.status = 'loading'
+      })
+      .addCase(getFiltersConfig.fulfilled, (state, action) => {
+        state.filtersConfig = action.payload
+        state.status = 'idle'
+      })
+
       .addCase(postSearchFiltersApi.pending , (state) => {
         state.status = 'loading'
       })
@@ -60,10 +45,11 @@ const filtersSlice = createSlice({
 })
 export default filtersSlice
 
-export const getSearchFiltersApi = createAsyncThunk(
-  'search/getApi',
+export const getFiltersConfig = createAsyncThunk(
+  'filters/getFiltersConfig',
   async (payload) => {
     let res = await fetchApi(payload)
+    console.log( res.data.data)
     return res.data.data
   }
 )

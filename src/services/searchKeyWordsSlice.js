@@ -24,6 +24,7 @@ const searchKeyWordsSlice = createSlice({
         state.value.searchTopKeyWords = action.payload
         state.status = 'idle'
       })
+      
       .addCase(searchKeyWords.pending ,(state) => {
         state.status = 'loading'
       })

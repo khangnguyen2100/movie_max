@@ -1,54 +1,70 @@
 import React, {useState, useRef, } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, HStack,Box,Flex,Button,Menu,MenuButton,MenuList,MenuItem,MenuDivider,Stack} from '@chakra-ui/react';
 import { HamburgerIcon, Search2Icon } from '@chakra-ui/icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import SearchTopKeyWordsList from './SearchTopKeyWordsList';
 import { searchTopKeyWords, searchKeyWords } from '../../services/searchKeyWordsSlice';
+import { getHomSelector } from '../../redux/selector';
 const Navigation = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const searchInput = useRef(null)
-  
+  const { value  } = useSelector(getHomSelector);
+
   const [searchText, setSearchText] = useState('');
   const [openSearchBar, setOpenSearchBar] = useState()
+  const [focused, setFocused] = useState(false)
+  const onFocus = () => {
+    setTimeout(() => {
+      setFocused(true)
+    }, 100);
+  }
+  const onBlur = () => {
+    setTimeout(() => {
+      setFocused(false)
+    }, 100);
+  }
 
   let searchOpenStyle = ''
   openSearchBar ? searchOpenStyle = "translateX(0)" : searchOpenStyle = "translateX(210%)"
-
+  const handleFilmClick = (category, id, title) => {
+    navigate(`/detail/${category}/${id}`);
+    searchInput.current.placeholder = title
+  };
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value)
     dispatch(searchTopKeyWords({
       path : 'search/searchLenovo',
       params : {
-        "searchKeyWord": searchText,
+        "searchKeyWord": e.target.value,
         "size": 10
       }
     }))
   }
 
   const handleClickSearchBtn = (text = searchText) => {
-    if(text !== '') {
-      dispatch(searchKeyWords({
+    text = text.replace('<em>','')
+    text = text.replace('</em>','')
+
+    dispatch(searchKeyWords({
         path : 'search/v1/searchWithKeyWord',
         params : {
-          "searchKeyWord": searchText,
+          "searchKeyWord": text || searchInput.current.placeholder,
           "size": 18,
           "sort": "",
           "searchType": ""
         }
-      }))
-  
-      if(text) {
-        text = text.replace('<em>','')
-        text = text.replace('</em>','')
-        searchInput.current.placeholder = text
-      }
-      setSearchText('')
-      navigate('/search')
-    } else {
+    }))
+
+    navigate('/search')
+
+    if(text === '') {
       setOpenSearchBar(!openSearchBar)
+    } else {
+      searchInput.current.placeholder = text
+      setSearchText('')
     }
   }
   const handleClickSearchTopKeyWords = (text) => {
@@ -83,7 +99,7 @@ const Navigation = () => {
             variant='flushed' 
             position='relative'
             focusBorderColor='primaryColor'
-            placeholder='Title, People, Genres'
+            placeholder={value?.searchKeyWord}
             _placeholder={{
               color : 'decsColor'
             }}
@@ -98,7 +114,8 @@ const Navigation = () => {
             pr='40px'
             pl='5px'
             onKeyDown={(e) => handleClickEnter(e)}
-
+            onFocus={onFocus} 
+            onBlur={onBlur}
             transform={{
               base : searchOpenStyle,
               md : 'translateX(0)'
@@ -108,11 +125,12 @@ const Navigation = () => {
             position='absolute' right='15px' top='50%' transform='translateY(-50%)' zIndex={50000000} fontSize="20px"
             onClick={() => handleClickSearchBtn()}
             color="textColor"
+            cursor={'pointer'}
           />
         </Box>
         {
-          searchText !== "" && (
-            <SearchTopKeyWordsList handleClickSearchTopKeyWords={handleClickSearchTopKeyWords} />
+          focused && (
+            <SearchTopKeyWordsList handleClickSearchTopKeyWords={handleClickSearchTopKeyWords} searchText={searchText} handleFilmClick={handleFilmClick} />
           )
         }
       </Box>
@@ -128,7 +146,7 @@ const Navigation = () => {
                 <Link to='/'>Home</Link>
               </Box>
               <Box  color='textColor' _hover={{color:'primaryColor'}}>
-                <Link to='/all'>Find your movie</Link>
+                <Link to='/filters'>Find your movie</Link>
               </Box>
           </HStack>
 
@@ -155,7 +173,7 @@ const Navigation = () => {
               </MenuItem>
               <MenuDivider  borderColor='dividerColor' />
               <MenuItem textTransform='capitalize'  _hover={{color : 'primaryColor'}} _active={{backgroundColor : 'transparent'}} _focus={{backgroundColor : 'transparent'}}>
-                <Link to='/all'>Find your movie</Link>
+                <Link to='/filters'>Find your movie</Link>
               </MenuItem>
             </MenuList>
           </Menu>

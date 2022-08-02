@@ -56,7 +56,7 @@ const Section = ({data}) => {
                 <SwiperSlide 
                   key={i}
                 >
-                  <Film category={data.category} id={data.id} score={data.score} imageUrl={data.imageUrl} href={data.jumpAddress} title={data.title} 
+                  <Film category={data.category} id={data.id} score={data.score} imageUrl={data.imageUrl} title={data.title} 
                   />
                 </SwiperSlide>
               )

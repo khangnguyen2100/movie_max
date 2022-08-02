@@ -1,30 +1,29 @@
 import React, {useState} from 'react'
 import { Box, Flex, Text, Skeleton,Badge, useBreakpointValue } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
-const Film = ({category, id, score, imageUrl, href, title}) => {
-  const navigate = useNavigate()
+const Film = ({category, id, score, imageUrl, title}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const minHeightValue = useBreakpointValue({
     base : '30vh',
     md : '40vh',
     lg : '43vh'
   })
-  const handleFilmClick = () => {
-    navigate(`/detail/${category}/${id}`)
-  }
   return (
+    <Link 
+        to={`/detail/${category}/${id}`}
+      >
     <Flex 
-      onClick={handleFilmClick}
       direction='column' justify='space-between'
       cursor='pointer'
       _hover={{
         color : 'primaryColor'
       }}
       > 
+      
       <Box position='relative'>
         <Skeleton
           isLoaded={imageLoaded}
@@ -64,6 +63,7 @@ const Film = ({category, id, score, imageUrl, href, title}) => {
         </Text>
       </Box>
     </Flex>
+      </Link>
   )
 }
 

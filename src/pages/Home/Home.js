@@ -5,6 +5,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import { fetchHomeApi } from "../../services/getHomeSlice";
 import { getHomSelector } from "../../redux/selector";
+
+import { fetchLeaderBoardSlice } from "../../services/searchLeaderBoardSlice";
+
 import Section from "../../components/Section/Section";
 import ButtonLink from "../../components/Buttons/ButtonLink";
 import Loading from "../../components/Loading/Loading";
@@ -12,6 +15,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const { value, status, pageCount } = useSelector(getHomSelector);
   const handleDispatchAction = () => {
+    dispatch(
+      fetchLeaderBoardSlice({
+        path: "search/v1/searchLeaderboard",
+      })
+    )
     dispatch(
       fetchHomeApi({
         path: "homePage/getHome",
@@ -37,7 +45,7 @@ const Home = () => {
       }
       endMessage={
         <Box onClick={handleDispatchAction}>
-          <ButtonLink contenet={"See More"} />
+          <ButtonLink content={"See More"} />
         </Box>
       }
     >

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
 import { Center, Skeleton, Icon, Heading, Box } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,11 +16,6 @@ import sliderConfig from "../../assets/images/sliderConfig/index";
 
 const Slider = () => {
   const navigate = useNavigate();
-
-  const handleFilmClick = (category, id) => {
-    navigate(`/detail/${category}/${id}`);
-  };
-
   const [sliderLoaded, setSliderLoaded] = useState(false);
 
   const prevRef = useRef(null);
@@ -62,67 +56,71 @@ const Slider = () => {
           return (
             <SwiperSlide
               key={i}
-              onClick={() => handleFilmClick(item.category, item.id)}
               style={{
                 position: "relative",
                 height: "100%",
                 width: "100%",
               }}
             >
-              <Center
-                position="relative"
-                cursor="pointer"
-                rounded="0 0 20px 20px"
-                h="full"
-                w="full"
+              <Link
+                to={`/detail/${item.category}/${item.id}`}
               >
-                <Skeleton
-                  isLoaded={sliderLoaded}
-                  mx="auto"
-                  rounded="0 0 10px 10px"
-                  overflow="hidden"
+
+                <Center
+                  position="relative"
+                  cursor="pointer"
+                  rounded="0 0 20px 20px"
                   h="full"
                   w="full"
-                  objectFit="cover"
                 >
-                  <LazyLoadImage
-                    src={item.src}
-                    effect="blur"
-                    style={{
-                      minHeight: "35vh",
-                      minWidth: "100vw",
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                      borderRadius: "0 0 10px 10px",
+                  <Skeleton
+                    isLoaded={sliderLoaded}
+                    mx="auto"
+                    rounded="0 0 10px 10px"
+                    overflow="hidden"
+                    h="full"
+                    w="full"
+                    objectFit="cover"
+                  >
+                    <LazyLoadImage
+                      src={item.src}
+                      effect="blur"
+                      style={{
+                        minHeight: "35vh",
+                        minWidth: "100vw",
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover",
+                        borderRadius: "0 0 10px 10px",
+                      }}
+                      afterLoad={() => setSliderLoaded(true)}
+                    />
+                  </Skeleton>
+                  <Heading
+                    position="absolute"
+                    bottom={{
+                      base: "25px",
+                      md: "50px",
                     }}
-                    afterLoad={() => setSliderLoaded(true)}
-                  />
-                </Skeleton>
-                <Heading
-                  position="absolute"
-                  bottom={{
-                    base: "25px",
-                    md: "50px",
-                  }}
-                  left={{
-                    base: "25px",
-                    md: "65px",
-                  }}
-                  textTransform="uppercase"
-                  letterSpacing="2px"
-                  _hover={{ textDecoration: "underline" }}
-                  color="white"
-                  fontWeight="medium"
-                  fontSize={{
-                    base: "xl",
-                    md: "2xl",
-                    lg: "3xl",
-                  }}
-                >
-                  {item.name}
-                </Heading>
-              </Center>
+                    left={{
+                      base: "25px",
+                      md: "65px",
+                    }}
+                    textTransform="uppercase"
+                    letterSpacing="2px"
+                    _hover={{ textDecoration: "underline" }}
+                    color="white"
+                    fontWeight="medium"
+                    fontSize={{
+                      base: "xl",
+                      md: "2xl",
+                      lg: "3xl",
+                    }}
+                  >
+                    {item.name}
+                  </Heading>
+                </Center>
+              </Link>
             </SwiperSlide>
           );
         })}

@@ -200,7 +200,6 @@ const Detail = () => {
                 subtitlesLink={movieDetail?.episodeVo[episodeIndex].subtitlingList}
                 definitionList={movieDetail?.episodeVo[episodeIndex].definitionList}
                 handleClickEpisode={handleClickEpisode}
-                handleDispatchMedia={handleDispatchMedia}
               />
             )}
           </Box>
