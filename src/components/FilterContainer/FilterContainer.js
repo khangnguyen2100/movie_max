@@ -111,7 +111,7 @@ const FilterContainer = () => {
                         <TabPanel key={i}>
                           {filter.items.map((item, j) => {
                             let style = {}
-                            if(filtersSelector.item.screeningType == item.params) {
+                            if(filtersSelector[item.screeningType] == item.params) {
                               style={
                                 color : primaryColor,
                               }
