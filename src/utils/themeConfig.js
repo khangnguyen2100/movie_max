@@ -1,18 +1,29 @@
 import { extendTheme } from "@chakra-ui/react"
 export const colors = {
   primaryColor : "rgba(50, 138, 241, 1)",
-  primaryDarkColor :'#151f32',
+  primaryDarkColor :'rgba(21, 31, 50, 1)',
   secondaryColor : '#F56857',
 
   textColor : '#fff',
   decsColor : "rgba(120, 144, 156,1)",
-  bgColor : "#151f32",
+  bgColor : "rgba(21, 31, 50, 1)",
   backgroundBtnColor : "rgba(50,138,241,.2)",
   backgroundBtnColor_hover : "rgba(50,138,241,.25)",
   bgScoreColor : 'rgba(14, 23, 37, .25)',
 
   dividerColor : 'rgba(255,255,255,.2)',
   starColor : '#f1c40f',
+}
+const layerStyles = {
+  containerStyles : {
+    px: {
+      base: "10px",
+      md: "20px",
+    },
+    maxW : "1240px",
+    mx : "auto",
+    w : "full",
+  }
 }
 const fonts = {
   body : "'Poppins', sans-serif",
@@ -49,6 +60,7 @@ const themeConfig = extendTheme({
   breakpoints,
   spacing,
   fonts,
+  layerStyles,
   config : {
     initialColorMode : 'dark'
   }

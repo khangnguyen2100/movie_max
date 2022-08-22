@@ -1,19 +1,15 @@
-import React from 'react'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import React, {memo} from 'react'
 import { Link } from 'react-router-dom';
+import { Box, Flex, Heading } from '@chakra-ui/react'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard } from 'swiper';
-import { ArrowForwardIcon } from '@chakra-ui/icons'
-
-import "swiper/css/scrollbar";
 import 'swiper/css';
 
 import ButtonBg from '../Buttons/ButtonBg'
 import Film from '../Film/Film'
-
 const Section = ({data}) => {
-  
   return (
     <Box
       mb='50px'
@@ -67,4 +63,4 @@ const Section = ({data}) => {
   )
 }
 
-export default Section
+export default memo(Section)

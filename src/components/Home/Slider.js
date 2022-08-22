@@ -1,21 +1,21 @@
-import React, { useState, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useRef, memo } from "react";
+import { Link } from "react-router-dom";
+
 import { Center, Skeleton, Icon, Heading, Box } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Keyboard, Lazy } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import sliderConfig from "../../assets/images/sliderConfig/index";
 
-
 const Slider = () => {
-  const navigate = useNavigate();
   const [sliderLoaded, setSliderLoaded] = useState(false);
 
   const prevRef = useRef(null);
@@ -165,4 +165,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default memo(Slider);

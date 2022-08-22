@@ -24,7 +24,7 @@ const getHomeSlice = createSlice({
 
         if(state.value.recommendItems) {
 
-          const newItems = action.payload.recommendItems.filter((item,i) => {
+          const newItems = action.payload.recommendItems.filter(item => {
             return state.value.recommendItems.filter(stateItem => {
               if(item.homeSectionId === stateItem.homeSectionId) {
                 return false
@@ -39,6 +39,7 @@ const getHomeSlice = createSlice({
         }
         state.pageCount++
         state.status = 'idle'
+        
       })
       .addCase(fetchHomeApi.rejected, (state, action) => {
         state.status = 'idle'

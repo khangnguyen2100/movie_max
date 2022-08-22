@@ -1,7 +1,6 @@
 video::cue {
-  background-color: rgba(0,0,0, .5);
+  background-color: rgba(0,0,0, .75);
 	color:#ccc;
-  
 }
 video::-webkit-media-text-track-container {
   padding-bottom: 0;
@@ -18,7 +17,7 @@ video::-webkit-media-text-track-container {
 }
 
 video::-webkit-media-text-track-display {
-  bottom : 85%;
+  bottom : 87%;
   position: absolute;
   overflow: hidden;
   white-space: pre-wrap;

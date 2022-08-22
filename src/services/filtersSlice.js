@@ -49,7 +49,6 @@ export const getFiltersConfig = createAsyncThunk(
   'filters/getFiltersConfig',
   async (payload) => {
     let res = await fetchApi(payload)
-    console.log( res.data.data)
     return res.data.data
   }
 )

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import { ArrowUpIcon } from '@chakra-ui/icons';
 import { Button, Icon } from '@chakra-ui/react'; 
 const ScrollToTopBtn = () =>{
@@ -21,7 +21,6 @@ const ScrollToTopBtn = () =>{
   };
   useEffect(() => {
     window.addEventListener('scroll', toggleVisible);
-    
     return () => window.removeEventListener('scroll', toggleVisible);
   },[])
   return (
@@ -55,4 +54,4 @@ const ScrollToTopBtn = () =>{
   );
 }
   
-export default ScrollToTopBtn;
+export default memo(ScrollToTopBtn);

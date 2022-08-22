@@ -45,10 +45,10 @@ const ListFilmLayout = ({ listFilm }) => {
       
     </Flex>
     {
-        listFilm?.length == 0 &&
-        <Flex justify={'center'} align='center'overflow='hidden'>
-          Not Found ^_^
-        </Flex>
+      listFilm?.length === 0 &&
+      <Flex justify={'center'} align='center'overflow='hidden'>
+        Not Found ^_^
+      </Flex>
       }
     </>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Box,
@@ -9,21 +9,21 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import { getHomSelector } from "../../redux/selector";
-import ListFilmLayout from "../../components/Layout/ListFilmLayout";
+import { getHomSelector } from "../redux/selector";
+import ListFilmLayout from "../components/Layout/ListFilmLayout";
 const Collection = () => {
   const getHomeData = useSelector(getHomSelector);
   const [data, setData] = useState({});
   let { homeSectionId } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    getHomeData?.value?.recommendItems?.forEach((arr, i) => {
+    getHomeData?.value?.recommendItems?.forEach(arr => {
       if (arr.homeSectionId === +homeSectionId) {
         setData(arr);
       }
     });
   }, [getHomeData]);
+
   return (
     <Box>
       <Breadcrumb
@@ -39,8 +39,8 @@ const Collection = () => {
       >
         <BreadcrumbItem>
           <BreadcrumbLink
-            onClick={() => navigate("/")}
             _hover={{ textDecoration: "underline" }}
+            href="/"
           >
             Home
           </BreadcrumbLink>

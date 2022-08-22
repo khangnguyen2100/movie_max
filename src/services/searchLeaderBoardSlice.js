@@ -17,7 +17,7 @@ const searchLeaderBoardSlice = createSlice({
       })
       .addCase(fetchLeaderBoardSlice.fulfilled, (state, action) => {
         state.value = action.payload
-        state.status = 'idle'
+        state.status = 'success'
       })
       .addCase(fetchLeaderBoardSlice.rejected, (state, action) => {
         state.status = 'idle'
