@@ -1,19 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useRef, useEffect, memo, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  memo,
+  useCallback,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  Box,
-} from "@chakra-ui/react";
+import { RiArrowGoBackLine, RiArrowGoForwardFill } from "react-icons/ri";
+import { Box, Input, Text, Flex } from "@chakra-ui/react";
 
 import "@vime/core/themes/default.css";
 import "@vime/core/themes/light.css";
 import "./index.css";
 import IconShow from "./IconShow";
 import ModalPopup from "./ModalPopup";
-import { Player, Hls } from "@vime/react";
-import ControlBar from "./ControlBar";
+import {
+  Player,
+  Hls,
+  Ui,
+  Poster,
+  ClickToPlay,
+  ControlSpacer,
+  TimeProgress,
+  Spinner,
+  Tooltip,
+  Skeleton,
+  DblClickFullscreen,
+  Controls,
+  ScrubberControl,
+  PlaybackControl,
+  PipControl,
+  VolumeControl,
+  SettingsControl,
+  FullscreenControl,
+  Control,
+  Submenu,
+  MenuRadio,
+  MenuRadioGroup,
+  Settings,
+  Captions,
+} from "@vime/react";
 import { movieDetailSelector } from "../../redux/selector";
 import { getMovieMedia } from "../../services/movieMediaSlice";
 function VideoPlayer({
@@ -24,26 +52,25 @@ function VideoPlayer({
   handleClickEpisode,
 }) {
   const player = useRef();
+  const menuRadioGroup = useRef();
+
   const dispatch = useDispatch();
   const params = useParams();
+  const { category, id, episodeId = 0 } = params;
+
+  const { movieDetail } = useSelector(movieDetailSelector);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const { category, id, episodeId = 0 } = params;
-  const { movieDetail } = useSelector(movieDetailSelector);
   const [currentTime, setCurrentTime] = useState(0);
-
-  const [videoSrc, setVideoSrc] = useState();
-  useEffect(() => {
-    setVideoSrc(videoSource);
-  }, [videoSource]);
   const [playing, setPlaying] = useState(false);
+  const isPlaying = useRef(playing);
   const [volume, setVolume] = useState(100);
   const [isMuted, setIsMuted] = useState(false);
-  const isPlaying = useRef(playing);
 
-  const [subtitlesIndex, setSubtitlesIndex] = useState(0);
   const [valueRate, setValueRate] = useState("1");
   const [definition, setDefinition] = useState(definitionList[0].code);
+  const [subtitlesIndex, setSubtitlesIndex] = useState(0);
+  const [subtitlesList, setSubtitlesList] = useState([...subtitlesLink]);
 
   const handlePlayerPress = (e) => {
     if (document.activeElement.tagName !== "INPUT") {
@@ -125,10 +152,6 @@ function VideoPlayer({
         document.cookie = `currentTime=${event.detail}`;
       }
     },
-    onSubtitlesIndexChange: function (event) {
-      setSubtitlesIndex(event.target.value);
-      player?.current?.setCurrentTextTrack(event.target.value);
-    },
     onValueRateChange: function (event) {
       setValueRate(event.target.value);
     },
@@ -175,14 +198,17 @@ function VideoPlayer({
       if (movieDetail?.episodeVo?.[length - 1].id !== +episodeId)
         setModalOpen(!modalOpen);
     },
-    goToNextEpisode: useCallback(function () {
-      movieDetail?.episodeVo?.forEach((item, i) => {
-        const nextEpisode = movieDetail?.episodeVo?.[i + 1];
-        if ((i === 0 && episodeId === 0) || +episodeId === item.id) {
-          handleClickEpisode(nextEpisode?.id, i + 1);
-        }
-      });
-    },[movieDetail]),
+    goToNextEpisode: useCallback(
+      function () {
+        movieDetail?.episodeVo?.forEach((item, i) => {
+          const nextEpisode = movieDetail?.episodeVo?.[i + 1];
+          if ((i === 0 && episodeId === 0) || +episodeId === item.id) {
+            handleClickEpisode(nextEpisode?.id, i + 1);
+          }
+        });
+      },
+      [movieDetail]
+    ),
     onError: function (info) {
       const type = info.detail.data.type;
       if (type !== "mediaError") {
@@ -205,25 +231,77 @@ function VideoPlayer({
       }
       return "";
     },
+    onSubtitlesIndexChange: function (event) {
+      let value = +event?.target?.value;
+      if (event === undefined) {
+        value = 0;
+      }
+      setSubtitlesIndex(value);
+      // bi lech index 
+      player?.current?.setCurrentTextTrack(value);
+      console.log(subtitlesList[value]?.language);
+    },
   };
+  useEffect(() => {
+    app.onSubtitlesIndexChange();
+  },[subtitlesList])
+  useEffect(() => {
+    subtitlesList?.forEach((sub, i) => {
+      if (sub.languageAbbr === "vi") {
+        setSubtitlesIndex(i);
+        player?.current?.setCurrentTextTrack(i);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     document.cookie = "currentTime=0";
   }, [id, episodeId]);
 
   useEffect(() => {
-    subtitlesLink?.forEach((sub, i) => {
-      if (sub.languageAbbr === "vi") {
-        setSubtitlesIndex(i);
-      }
-    });
-  }, [subtitlesLink]);
-
-  useEffect(() => {
     window.addEventListener("keydown", (e) => handlePlayerPress(e));
     return () =>
       window.removeEventListener("keydown", (e) => handlePlayerPress(e));
   }, []);
+  const handleImportSub = (e) => {
+    const file = e.target.files[0];
+    const srtType = file.name.endsWith("srt");
+    if (srtType) {
+      var reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function () {
+        var srtxt = reader.result.split("\n");
+
+        let txt = "WEBVTT\n";
+
+        for (let i = 0; i < srtxt.length; i++) {
+          if (
+            srtxt[i].match(
+              /[0-9]+:[0-9]+:[0-9]+,[0-9]+\s-->\s[0-9]+:[0-9]+:[0-9]+,[0-9]+/g
+            )
+          ) {
+            txt = txt + srtxt[i].replace(/,/g, ".") + "\n";
+          } else {
+            txt = txt + srtxt[i] + "\n";
+          }
+        }
+      };
+    } else {
+
+      const url = URL.createObjectURL(file);
+      setSubtitlesList((prev) => {
+        return [
+          {
+            language: file.name,
+            languageAbbr: "fileImport",
+            subtitlingUrl: url,
+            translateType: 1,
+          },
+          ...prev,
+        ];
+      });
+    }
+  };
 
   return (
     <Box position={"relative"}>
@@ -237,18 +315,18 @@ function VideoPlayer({
           maxHeight: "100%",
           maxWidth: "100%",
         }}
+        ref={player}
+        volume={volume}
+        playbackRate={valueRate}
+        currentTime={currentTime}
+        onClick={(e) => app.handleClickPlayer(e)}
         onVmPlaybackReady={() => {
           setCurrentTime(+app.getCookie("currentTime"));
           if (!playing) setPlaying(true);
         }}
-        volume={volume}
-        playbackRate={valueRate}
-        currentTime={currentTime}
         onVmCurrentTimeChange={app.onTimeUpdate}
         onVmPlayingChange={app.onPlayingUpdate}
         onVmPlaybackEnded={() => app.onPlaybackEnded()}
-        ref={player}
-        onClick={(e) => app.handleClickPlayer(e)}
       >
         <Hls
           onVmError={(info) => app.onError(info)}
@@ -256,38 +334,127 @@ function VideoPlayer({
           poster={poster}
           preload="none"
         >
-          <source type="application/x-mpegURL" data-src={videoSrc} />
-          {subtitlesLink?.map((sub, i) => {
+          <source type="application/x-mpegURL" data-src={videoSource} />
+          {subtitlesList?.map((sub, i) => {
+            let url = "https://srt2vttphp.herokuapp.com/index.php?url=";
+            if (sub.languageAbbr === "fileImport") {
+              url = "";
+            }
             return (
               <track
                 key={i}
                 kind="subtitles"
                 default={subtitlesIndex === i}
-                src={`https://srt-to-vtt.vercel.app/?url=${sub.subtitlingUrl}`}
+                src={`${url}${sub.subtitlingUrl}`}
+                data-vs={`${url}${sub.subtitlingUrl}`}
                 srcLang={sub.languageAbbr}
                 label={sub.language}
               />
             );
           })}
         </Hls>
+        <Ui>
+          <Controls fullWidth>
+            <ScrubberControl
+              style={{
+                bottom: "50px",
+                "--vm-scrubber-loading-stripe-size": "50px",
+              }}
+            />
+          </Controls>
+          <Controls pin="bottomLeft" full-width>
+            <PlaybackControl tooltip-direction="right" />
+            <VolumeControl vocab="10" step={10} />
+            <TimeProgress />
 
-        <ControlBar
-          app={app}
-          valueRate={valueRate}
-          definition={definition}
-          definitionList={definitionList}
-          subtitlesIndex={subtitlesIndex}
-          subtitlesLink={subtitlesLink}
-        />
+            <ControlSpacer />
+
+            <Control>
+              <Tooltip>Backward 10s</Tooltip>
+              <RiArrowGoBackLine size={23} onClick={() => app.seekBackward()} />
+            </Control>
+            <Control>
+              <Tooltip>Forward 10s</Tooltip>
+              <RiArrowGoForwardFill
+                size={23}
+                onClick={() => app.seekForward()}
+              />
+            </Control>
+            <PipControl />
+            <SettingsControl key="s" />
+            <FullscreenControl keys="f" tooltip-direction="left" />
+          </Controls>
+          <Settings>
+            <Submenu label="Speeds">
+              <MenuRadioGroup
+                value={valueRate}
+                onVmCheck={app.onValueRateChange}
+              >
+                <MenuRadio label="0.5" value="0.5" />
+                <MenuRadio label="0.75" value="0.75" />
+                <MenuRadio label="Normal" value="1" />
+                <MenuRadio label="1.25" value="1.25" />
+                <MenuRadio label="1.5" value="1.5" />
+                <MenuRadio label="2" value="2" />
+              </MenuRadioGroup>
+            </Submenu>
+
+            <Submenu label="Qualities">
+              <MenuRadioGroup
+                value={definition}
+                onVmCheck={app.onDefinitionChange}
+              >
+                {definitionList?.map((definition, i) => {
+                  return (
+                    <MenuRadio
+                      key={i}
+                      label={definition.description}
+                      value={definition.code}
+                    />
+                  );
+                })}
+              </MenuRadioGroup>
+            </Submenu>
+
+            <Submenu label="Subtitles">
+              <Flex justify={"space-between"} align="center">
+                <Text>Import file</Text>
+                <Input
+                  type="file"
+                  accept="text/vtt, text/srt"
+                  onChange={(e) => handleImportSub(e)}
+                />
+              </Flex>
+              <MenuRadioGroup
+                onVmCheck={app.onSubtitlesIndexChange}
+                value={subtitlesIndex}
+                ref={menuRadioGroup}
+              >
+                {subtitlesList?.map((sub, i) => {
+                  return <MenuRadio key={i} label={sub.language} value={i} />;
+                })}
+              </MenuRadioGroup>
+            </Submenu>
+          </Settings>
+          <Spinner showWhenMediaLoading={true} />
+          <DblClickFullscreen />
+          <ClickToPlay />
+          <Poster />
+          <Captions />
+          <Skeleton
+            effect="sheen"
+            style={{
+              "--vm-skeleton-sheen-color": "rgba(50,138,241,.15)",
+              "--vm-skeleton-color": "rgba(50,138,241,.05)",
+              "--vm-skeleton-z-index": "0",
+            }}
+          />
+        </Ui>
       </Player>
-      
-      {!playing && (
-        <IconShow status='play' />
-      )}
-      {playing && (
-        <IconShow status='pause' />
-      )}
-      <ModalPopup 
+
+      {!playing && <IconShow status="play" />}
+      {playing && <IconShow status="pause" />}
+      <ModalPopup
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         goToNextEpisode={app.goToNextEpisode}

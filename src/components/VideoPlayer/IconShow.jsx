@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { AiOutlinePause } from "react-icons/ai";
 import { FiPlay } from "react-icons/fi";
 const IconShow = ({status}) => {
-  console.log('IconShow')
   return (
     <Box
       position={"absolute"}

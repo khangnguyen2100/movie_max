@@ -33,7 +33,6 @@ const Detail = () => {
   const { movieDetail } = useSelector(movieDetailSelector);
   const { movieMedia } = useSelector(movieMediaSelector);
   const [episodeIndex, setEpisodeIndex] = useState(0);
-
   useEffect(() => {
     dispatch(
       getMovieDetail({
@@ -71,7 +70,7 @@ const Detail = () => {
 
   return (
     <Box mt={"50px"}>
-      {Object.keys(movieDetail).length !== 0 ? (
+      {Object?.keys(movieDetail)?.length !== 0 ? (
         <Box>
           {/* info  */}
           <Box

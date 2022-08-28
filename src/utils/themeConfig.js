@@ -23,6 +23,17 @@ const layerStyles = {
     maxW : "1240px",
     mx : "auto",
     w : "full",
+  },
+  absCenter : {
+    position : 'absolute',
+    top : '50%',
+    left : '50%',
+    transform : 'translate(-50%, -50%)'
+  },
+  flexCenter : {
+    display : 'flex',
+    justifyContent : 'center',
+    alignItems : 'center',
   }
 }
 const fonts = {

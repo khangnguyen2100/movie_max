@@ -12,7 +12,6 @@ import {
 import ButtonBg from "../Buttons/ButtonBg";
 
 const ModalPopup = ({modalOpen, setModalOpen, goToNextEpisode}) => {
-  console.log('ModalPopup');
   return (
     <Modal
         onClose={() => setModalOpen(false)}
@@ -47,7 +46,7 @@ const ModalPopup = ({modalOpen, setModalOpen, goToNextEpisode}) => {
             </Box>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+    </Modal>
   )
 }
 

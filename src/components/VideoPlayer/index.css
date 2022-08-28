@@ -1,6 +1,8 @@
 video::cue {
   background-color: rgba(0,0,0, .75);
 	color:#ccc;
+  background-color: transparent;
+	color : transparent;
 }
 video::-webkit-media-text-track-container {
   padding-bottom: 0;

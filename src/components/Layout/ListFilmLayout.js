@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { Flex, Box } from "@chakra-ui/react";
 
 import Film from "../Film/Film";
@@ -55,4 +55,4 @@ const ListFilmLayout = ({ listFilm }) => {
   );
 };
 
-export default ListFilmLayout;
+export default memo(ListFilmLayout);
