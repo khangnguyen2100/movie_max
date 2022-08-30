@@ -33,6 +33,14 @@ const Detail = () => {
   const { movieDetail } = useSelector(movieDetailSelector);
   const { movieMedia } = useSelector(movieMediaSelector);
   const [episodeIndex, setEpisodeIndex] = useState(0);
+
+  useEffect(() => {
+    movieDetail?.episodeVo?.forEach((episode, i) => {
+      if (+episodeId === episode.id) {
+        setEpisodeIndex(i);
+      }
+    });
+  }, [movieDetail]);
   useEffect(() => {
     dispatch(
       getMovieDetail({

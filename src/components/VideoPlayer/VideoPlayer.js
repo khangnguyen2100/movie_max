@@ -1,16 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  memo,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useEffect, memo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RiArrowGoBackLine, RiArrowGoForwardFill } from "react-icons/ri";
 import { Box, Input, Text, Flex } from "@chakra-ui/react";
-
+import { AiOutlineUpload } from "react-icons/ai";
 import "@vime/core/themes/default.css";
 import "@vime/core/themes/light.css";
 import "./index.css";
@@ -52,8 +46,6 @@ function VideoPlayer({
   handleClickEpisode,
 }) {
   const player = useRef();
-  const menuRadioGroup = useRef();
-
   const dispatch = useDispatch();
   const params = useParams();
   const { category, id, episodeId = 0 } = params;
@@ -71,6 +63,10 @@ function VideoPlayer({
   const [definition, setDefinition] = useState(definitionList[0].code);
   const [subtitlesIndex, setSubtitlesIndex] = useState(0);
   const [subtitlesList, setSubtitlesList] = useState([...subtitlesLink]);
+
+  useEffect(() => {
+    setSubtitlesList([...subtitlesLink]);
+  }, [subtitlesLink]);
 
   const handlePlayerPress = (e) => {
     if (document.activeElement.tagName !== "INPUT") {
@@ -213,6 +209,7 @@ function VideoPlayer({
       const type = info.detail.data.type;
       if (type !== "mediaError") {
         app.handleDispatchMedia();
+        console.clear();
         console.log("RELOAD...");
       }
     },
@@ -233,18 +230,18 @@ function VideoPlayer({
     },
     onSubtitlesIndexChange: function (event) {
       let value = +event?.target?.value;
+
       if (event === undefined) {
         value = 0;
       }
+
       setSubtitlesIndex(value);
-      // bi lech index 
+      // bi lech index
       player?.current?.setCurrentTextTrack(value);
-      console.log(subtitlesList[value]?.language);
+      // console.log(subtitlesList[value]?.language);
     },
   };
-  useEffect(() => {
-    app.onSubtitlesIndexChange();
-  },[subtitlesList])
+
   useEffect(() => {
     subtitlesList?.forEach((sub, i) => {
       if (sub.languageAbbr === "vi") {
@@ -252,8 +249,8 @@ function VideoPlayer({
         player?.current?.setCurrentTextTrack(i);
       }
     });
-  }, []);
-
+  }, [subtitlesLink]);
+  
   useEffect(() => {
     document.cookie = "currentTime=0";
   }, [id, episodeId]);
@@ -263,32 +260,16 @@ function VideoPlayer({
     return () =>
       window.removeEventListener("keydown", (e) => handlePlayerPress(e));
   }, []);
+
   const handleImportSub = (e) => {
     const file = e.target.files[0];
-    const srtType = file.name.endsWith("srt");
+    const srtType = file.name.endsWith("vtt");
+    // check bang kiem tra dau co phai webvtt hay ko
     if (srtType) {
-      var reader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = function () {
-        var srtxt = reader.result.split("\n");
-
-        let txt = "WEBVTT\n";
-
-        for (let i = 0; i < srtxt.length; i++) {
-          if (
-            srtxt[i].match(
-              /[0-9]+:[0-9]+:[0-9]+,[0-9]+\s-->\s[0-9]+:[0-9]+:[0-9]+,[0-9]+/g
-            )
-          ) {
-            txt = txt + srtxt[i].replace(/,/g, ".") + "\n";
-          } else {
-            txt = txt + srtxt[i] + "\n";
-          }
-        }
-      };
-    } else {
-
       const url = URL.createObjectURL(file);
+      // sub active set mat tieu
+      //  sub truoc sub active hien tai thanh 2 cai
+      // sub 0 mat va tat ca bi lech index+1
       setSubtitlesList((prev) => {
         return [
           {
@@ -300,9 +281,55 @@ function VideoPlayer({
           ...prev,
         ];
       });
+      setSubtitlesIndex(0);
+      player?.current?.setCurrentTextTrack(0);
     }
-  };
+    // {
+    //   // var reader = new FileReader();
+    //   // reader.readAsText(file);
+    //   // reader.onload = function () {
+    //   //   var srtxt = reader.result.split("\n");
+    //   //   let txt = "WEBVTT\n";
 
+    //   //   let isContent = false;
+    //   //   const subtitleData = [];
+    //   //   let stampIndex = 0;
+    //   //   let timeInfo = [];
+    //   //   for (let i = 0; i < srtxt.length; i++) {
+    //   //     if (
+    //   //       srtxt[i].match(
+    //   //         /[0-9]+:[0-9]+:[0-9]+,[0-9]+\s-->\s[0-9]+:[0-9]+:[0-9]+,[0-9]+/g
+    //   //       )
+    //   //     ) {
+    //   //       const time = srtxt[i].replace(/,/g, ".");
+    //   //       txt = txt + time + "\n";
+    //   //       stampIndex = i;
+    //   //       isContent = true;
+    //   //       timeInfo = time.split("-->");
+    //   //     } else {
+    //   //       txt = txt + srtxt[i] + "\n";
+    //   //       if (isContent) {
+    //   //         subtitleData.push({
+    //   //           index: +srtxt[stampIndex - 1],
+    //   //           timeStart: timeInfo[0],
+    //   //           timeEnd: timeInfo[1],
+    //   //           content: srtxt[stampIndex + 1],
+    //   //         });
+    //   //       }
+    //   //     }
+    //   //   }
+    //   //   const video = document.querySelector('.lazy.sc-vm-file.sc-vm-file-s')
+    //   //   let captiontrack = video.addTextTrack(
+    //   //     "subtitles",
+    //   //     "Captions",
+    //   //     "en"
+    //   //   );
+    //   //   captiontrack.mode = "showing";
+    //   //   captiontrack.addCue(new VTTCue(0, 1, "Hildy 1"));
+    //   //   captiontrack.addCue(new VTTCue(2, 3, "Hildy 2222"));
+    //   // };
+    // }
+  };
   return (
     <Box position={"relative"}>
       <Player
@@ -332,7 +359,7 @@ function VideoPlayer({
           onVmError={(info) => app.onError(info)}
           crossOrigin="anonymous"
           poster={poster}
-          preload="none"
+          preload="auto"
         >
           <source type="application/x-mpegURL" data-src={videoSource} />
           {subtitlesList?.map((sub, i) => {
@@ -344,6 +371,7 @@ function VideoPlayer({
               <track
                 key={i}
                 kind="subtitles"
+                id={i}
                 default={subtitlesIndex === i}
                 src={`${url}${sub.subtitlingUrl}`}
                 data-vs={`${url}${sub.subtitlingUrl}`}
@@ -418,17 +446,38 @@ function VideoPlayer({
 
             <Submenu label="Subtitles">
               <Flex justify={"space-between"} align="center">
-                <Text>Import file</Text>
+                <label
+                  htmlFor="upload-sub"
+                  style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginLeft: "16px",
+                    padding: "8px 5px",
+                    borderBottom: "1px solid #555",
+                  }}
+                >
+                  <Text fontSize={"16px"} fontWeight="500">
+                    Import subtitle (.vtt){" "}
+                  </Text>
+                  <AiOutlineUpload size={24} />
+                </label>
                 <Input
+                  display={"none"}
+                  w={"0"}
                   type="file"
-                  accept="text/vtt, text/srt"
+                  accept=".vtt"
+                  placeholder="vtt file"
+                  id="upload-sub"
+                  visibility={"hidden"}
                   onChange={(e) => handleImportSub(e)}
                 />
               </Flex>
               <MenuRadioGroup
                 onVmCheck={app.onSubtitlesIndexChange}
                 value={subtitlesIndex}
-                ref={menuRadioGroup}
               >
                 {subtitlesList?.map((sub, i) => {
                   return <MenuRadio key={i} label={sub.language} value={i} />;
