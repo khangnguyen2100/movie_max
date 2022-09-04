@@ -1,6 +1,5 @@
 
 export const getHomSelector = (data) => data.getHome
-export const getSearchPlaceholder = (data) => data.getHome.value.searchKeyWord
 
 export const filtersSelector = (data) => data.filters.filtersValue
 export const filtersConfig = (data) => data.filters.filtersConfig

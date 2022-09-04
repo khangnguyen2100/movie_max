@@ -34,8 +34,11 @@ const Layout = ({ children }) => {
       </Box>
 
       {/* footer  */}
-      <Box justifySelf="flex-end" bg="#111" p="30px 0" mt="auto">
-        <Footer />
+
+      <Box mt="auto">
+        <Box justifySelf="flex-end" bg="#111" p="25px 0" mt='250px'>
+          <Footer />
+        </Box>
       </Box>
 
       <ScrollToTopBtn />

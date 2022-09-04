@@ -51,7 +51,7 @@ function VideoPlayer({
   const { category, id, episodeId = 0 } = params;
 
   const { movieDetail } = useSelector(movieDetailSelector);
-
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [playing, setPlaying] = useState(false);

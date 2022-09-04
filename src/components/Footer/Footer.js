@@ -22,8 +22,8 @@ const Footer = () => {
           fontWeight="extrabold"
           color="primaryColor"
           fontSize={{
-            base: "lg",
-            md: "xl",
+            base: "14px",
+            md: "16px",
           }}
         >
           <Link to="/">MovieMax</Link>
@@ -64,8 +64,8 @@ const Footer = () => {
         <Text
           textAlign="right"
           fontSize={{
-            base: "lg",
-            md: "xl",
+            base: "14px",
+            md: "16px",
           }}
         >
           Contact
@@ -73,8 +73,8 @@ const Footer = () => {
         <Box
           color="decsColor"
           fontSize={{
-            base: "14px",
-            md: "16px",
+            base: "12px",
+            md: "14px",
           }}
         >
           <Text>0933807909</Text>
