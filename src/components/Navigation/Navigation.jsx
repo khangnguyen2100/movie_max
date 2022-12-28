@@ -7,16 +7,15 @@ import MenuMobile from "./MenuMobile";
 
 const Navigation = () => {
   return (
-    <Box zIndex="100" position={"relative"} h="55px" bg={"bgColor"}>
+    <Box zIndex="100" position={"relative"}>
       <Box
-        bg={"bgColor"}
         position="fixed"
         top="0"
         left="0"
         right="0"
         w="full"
         zIndex="100"
-        boxShadow="rgba(0, 0, 0, 0.15) 0px 5px 15px"
+        // boxShadow="rgba(0, 0, 0, 0.15) 0px 5px 15px"
       >
         <Box layerStyle={"containerStyles"}>
           <Flex
