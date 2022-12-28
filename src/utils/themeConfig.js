@@ -18,7 +18,7 @@ const layerStyles = {
   containerStyles : {
     px: {
       base: "10px",
-      md: "20px",
+      md: "0px",
     },
     maxW : "1240px",
     mx : "auto",
@@ -37,7 +37,7 @@ const layerStyles = {
   }
 }
 const fonts = {
-  body : "'Poppins', sans-serif",
+  body : "'Exo 2', sans-serif",
 }
 const breakpoints = {
   sm: '30em', // 480px
