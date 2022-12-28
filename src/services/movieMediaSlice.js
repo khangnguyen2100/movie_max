@@ -5,7 +5,7 @@ const initialState = {
   movieMedia : {},
   status : 'idle'
 }
-const movieMediaSlice = createSlice({
+export const movieMediaSlice = createSlice({
   name : 'movieMedia',
   initialState,
   reducers : {
@@ -22,7 +22,6 @@ const movieMediaSlice = createSlice({
       })
   }
 })
-export default movieMediaSlice
 
 export const getMovieMedia = createAsyncThunk(
   'detail/getMovieMedia',

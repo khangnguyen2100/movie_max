@@ -1,13 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import getHomeSlice from "../services/getHomeSlice";
-import filtersSlice from "../services/filtersSlice";
-import searchKeyWordsSlice from "../services/searchKeyWordsSlice";
-import searchLeaderBoardSlice from "../services/searchLeaderBoardSlice";
-import movieDetailSlice from "../services/movieDetailSlice";
-import movieMediaSlice from "../services/movieMediaSlice";
+import {getConfigSlice, getHomeSlice, filtersSlice, searchKeyWordsSlice, searchLeaderBoardSlice, movieDetailSlice, movieMediaSlice, getGenresSlice} from "../services";
 const store = configureStore({
   reducer : {
+    getConfig : getConfigSlice.reducer,
+    getGenres : getGenresSlice.reducer,
     getHome : getHomeSlice.reducer,
     filters : filtersSlice.reducer,
     searchKeyWords : searchKeyWordsSlice.reducer,

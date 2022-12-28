@@ -6,7 +6,7 @@ const initialState = {
   value : {},
   status : 'idle',
 }
-const searchLeaderBoardSlice = createSlice({
+export const searchLeaderBoardSlice = createSlice({
   name : 'searchLeaderBoard',
   initialState,
   reducers : {},
@@ -24,7 +24,6 @@ const searchLeaderBoardSlice = createSlice({
       })
   }
 })
-export default searchLeaderBoardSlice
 
 export const fetchLeaderBoardSlice = createAsyncThunk(
   'search/fetchLeaderBoardSlice',

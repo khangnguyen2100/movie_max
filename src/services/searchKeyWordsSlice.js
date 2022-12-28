@@ -9,7 +9,7 @@ const initialState = {
   },
   status : 'idle'
 }
-const searchKeyWordsSlice = createSlice({
+export const searchKeyWordsSlice = createSlice({
   name : 'searchKeyWords',
   initialState,
   reducers : {
@@ -34,7 +34,6 @@ const searchKeyWordsSlice = createSlice({
       })
   }
 })
-export default searchKeyWordsSlice
 
 export const searchKeyWords = createAsyncThunk(
   'search/v1/searchWithKeyWord',

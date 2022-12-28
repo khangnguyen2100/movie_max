@@ -4,10 +4,10 @@ import fetchApi from './fetchApi';
 
 const initialState = {
   value : {},
-  pageCount : 2,
+  pageCount : 1,
   status : 'idle',
 }
-const getHomeSlice = createSlice({
+export const getHomeSlice = createSlice({
   name : 'getHome',
   initialState,
   reducers : {},
@@ -17,28 +17,9 @@ const getHomeSlice = createSlice({
           state.status = 'loading'
       })
       .addCase(fetchHomeApi.fulfilled, (state, action) => {
-        //  filter trasch dont need in recommendItems
-        action.payload.recommendItems = action.payload.recommendItems.filter(item => {
-          return item.coverType !== null 
-        })
-
-        if(state.value.recommendItems) {
-
-          const newItems = action.payload.recommendItems.filter(item => {
-            return state.value.recommendItems.filter(stateItem => {
-              if(item.homeSectionId === stateItem.homeSectionId) {
-                return false
-              }
-            })
-          })
-          // homeSectionId
-          state.value.page = state.pageCount
-          state.value.recommendItems.push(...newItems)
-        } else {
-          state.value = action.payload
-        }
+        state.value = action.payload
         state.pageCount++
-        state.status = 'idle'
+        state.status = 'done'
         
       })
       .addCase(fetchHomeApi.rejected, (state, action) => {
@@ -46,12 +27,11 @@ const getHomeSlice = createSlice({
       })
   }
 })
-export default getHomeSlice
 
 export const fetchHomeApi = createAsyncThunk(
   'getHome/fetchHomeApi',
   async (data) => {
     let res = await fetchApi(data)
-    return res.data.data
+    return res.data.results
   }
 );
