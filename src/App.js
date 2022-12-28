@@ -1,13 +1,37 @@
+import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import { Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Collection from "./pages/Collection";
-import Filters from "./pages/Filters";
-import Search from "./pages/Search";
 import Detail from "./pages/Detail";
+import Filters from "./pages/Filters";
+import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Search from "./pages/Search";
+import { getConfig, getGenres } from "./services/";
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      getConfig({
+        path: "configuration",
+      })
+    );
+    dispatch(
+      getGenres({
+        path: "genre/movie/list",
+        type: 'movie'
+      })
+    );
+    dispatch(
+      getGenres({
+        path: "genre/tv/list",
+        type: 'tv'
+      })
+    );
+  }, []);
+
   return (
     <Layout>
       <Routes>
