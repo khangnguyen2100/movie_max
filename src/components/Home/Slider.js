@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Center, CircularProgress, CircularProgressLabel, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import React, { memo, useEffect, useRef } from "react";
@@ -60,7 +61,7 @@ const Slider = () => {
         keyboard={true}
         loop={true}
         autoplay={{
-          delay: 314000,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -190,7 +191,6 @@ const Slider = () => {
               </SwiperSlide>
             );
           }
-          return <></>
         })}
         <Icon
           as={ChevronLeftIcon}
