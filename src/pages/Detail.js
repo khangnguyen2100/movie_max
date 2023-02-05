@@ -12,6 +12,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   Center,
+  Image,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
@@ -78,7 +79,7 @@ const Detail = () => {
 
   return (
     <Box mt={"50px"}>
-      {Object?.keys(movieDetail)?.length !== 0 ? (
+      {Object?.keys(movieDetail)?.length == 0 ? (
         <Box>
           {/* info  */}
           <Box
@@ -226,9 +227,11 @@ const Detail = () => {
             overflow="hidden"
             boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
             rounded="5px"
+            bg={'rgba(21, 31, 50, 1)'}
             ref={player}
+            py='30px'
           >
-            {movieMedia?.mediaUrl && (
+            {movieMedia?.mediaUrl ? (
               <VideoPlayer
                 videoSource={movieMedia?.mediaUrl}
                 poster={movieDetail?.coverHorizontalUrl}
@@ -240,7 +243,24 @@ const Detail = () => {
                 }
                 handleClickEpisode={handleClickEpisode}
               />
-            )}
+            ) : (
+              <Flex justifyContent={'center'} flexDirection={['column', 'column', 'row']} alignItems='center' h={'70vh'} w='full'>
+                <Box mb={['25px', '25px', '0']} flex={['0', '0', '1']} h='full' w={'full'}>
+                  <Image fit={'contain'} h='full' w={'full'} src='/images/no-data.png' />
+                </Box>
+                {/* content */}
+                <Box fontWeight={'600'} px={['4', '4', '0']} fontSize={['18px', '18px', '22px']} maxW='470px' mx={['0', '0', '25px']}>
+                  <Text mb='10px'>
+                    Something went wrong and the file can't be found.
+                  </Text>
+                  <Text>
+                    Please try again later.
+                  </Text>
+                </Box>
+              </Flex>
+
+            )
+            }
           </Box>
 
           {/* episodes */}
