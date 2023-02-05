@@ -13,7 +13,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import FilmPreview from "./FilmPreview";
-const Film = ({ category, id, score, imageUrl, title }) => {
+const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const skeletonImg = useRef()
   const [showPreview, setShowPreview] = useState(false);
@@ -34,10 +34,11 @@ const Film = ({ category, id, score, imageUrl, title }) => {
   const handleClosePreview = () => {
     setShowPreview(false);
   };
+  const vote_average_rounded = vote_average.toFixed(1);
   return (
     <>
       <Link
-        to={`/detail/${category}/${id}`}
+        to={`/${media_type}/${id}`}
       >
         <Flex
           direction="column"
@@ -70,7 +71,7 @@ const Film = ({ category, id, score, imageUrl, title }) => {
               ref={skeletonImg}
             >
               <LazyLoadImage
-                src={imageUrl}
+                src={baseUrl+poster_path}
                 effect="blur"
                 style={{
                   borderRadius: "7px",
@@ -106,17 +107,17 @@ const Film = ({ category, id, score, imageUrl, title }) => {
               Preview
             </Box>
             </Skeleton>
-            {score && (
+            {vote_average && (
               <Box position="absolute" top="10px" right="10px">
                 <Badge
-                  bg={"bgScoreColor"}
+                  bg={"bgvote_averageColor"}
                   fontWeight="bold"
                   fontSize="14px"
                   display="flex"
                   alignItems="center"
                   color="#fff"
                 >
-                  {score}
+                  {vote_average_rounded}
                   <StarIcon color="starColor" ml="3px" />
                 </Badge>
               </Box>
@@ -132,9 +133,7 @@ const Film = ({ category, id, score, imageUrl, title }) => {
               textTransform="capitalize"
               textAlign="center"
             >
-              {title.includes("[Vietsub]")
-                ? title.replace("[Vietsub]", "")
-                : title}
+              {title || name}
             </Text>
           </Box>
         </Flex>
@@ -142,7 +141,7 @@ const Film = ({ category, id, score, imageUrl, title }) => {
       {showPreview && checkDevice && (
         <FilmPreview
           id={id}
-          category={category}
+          media_type={media_type}
           showPreview={showPreview}
           closePreview={handleClosePreview}
         />
