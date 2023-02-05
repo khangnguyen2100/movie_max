@@ -20,7 +20,7 @@ const layerStyles = {
       base: "10px",
       md: "0px",
     },
-    maxW : "1240px",
+    maxW : "1200px",
     mx : "auto",
     w : "full",
   },
