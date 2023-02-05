@@ -3,12 +3,9 @@ import Layout from "./components/Layout/Layout";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Collection from "./pages/Collection";
-import Detail from "./pages/Detail";
-import Filters from "./pages/Filters";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import Search from "./pages/Search";
+
+
+import { MovieDetail, Search, Filters, NotFound, Home, Collection, TvDetail } from "./pages";
 import { getConfig, getGenres } from "./services/";
 function App() {
   const dispatch = useDispatch();
@@ -39,8 +36,8 @@ function App() {
         <Route exact path="/collection/:homeSectionId" element={<Collection />} ></Route>
         <Route exact path="/filters" element={<Filters />}></Route>
         <Route exact path="/search" element={<Search />}></Route>
-        <Route exact path="/detail/:category/:id" element={<Detail />}></Route>
-        <Route exact path="/detail/:category/:id/:episodeId" element={<Detail />}></Route>
+        <Route exact path="/movie/:id" element={<MovieDetail />}></Route>
+        <Route exact path="/tv/:id" element={<TvDetail />}></Route>
         <Route path='*' exact={true} element={<NotFound />} />
       </Routes>
     </Layout>

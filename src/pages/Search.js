@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react'
 
 import { searchKeyWordsSelector } from '../redux/selector'
 import ListFilmLayout from '../components/Layout/ListFilmLayout'
-const Search = () => {
+export const Search = () => {
   let data = useSelector(searchKeyWordsSelector)
   return (
     <Flex justify={'space-between'} align>  
@@ -12,5 +12,3 @@ const Search = () => {
     </Flex>
   )
 }
-
-export default Search

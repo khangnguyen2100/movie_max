@@ -9,7 +9,7 @@ import FilterContainer from "../components/FilterContainer/FilterContainer";
 import ListFilmLayout from "../components/Layout/ListFilmLayout";
 import Loading from "../components/Loading/Loading";
 
-const Filters = () => {
+export const Filters = () => {
   const dispatch = useDispatch();
   const searchData = useSelector(searchFiltersSelector);
   const filtersSelectorData = useSelector(filtersSelector);
@@ -61,5 +61,3 @@ const Filters = () => {
     </>
   );
 };
-
-export default Filters;

@@ -11,7 +11,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import { getHomSelector } from "../redux/selector";
 import ListFilmLayout from "../components/Layout/ListFilmLayout";
-const Collection = () => {
+export const Collection = () => {
   const getHomeData = useSelector(getHomSelector);
   const [data, setData] = useState({});
   let { homeSectionId } = useParams();
@@ -55,5 +55,3 @@ const Collection = () => {
     </Box>
   );
 };
-
-export default Collection;
