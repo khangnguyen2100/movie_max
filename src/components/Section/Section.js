@@ -8,7 +8,11 @@ import "swiper/css";
 
 import ButtonBg from "../Buttons/ButtonBg";
 import Film from "../Film/Film";
-const Section = ({ data }) => {
+import { getConfigSelector } from "../../redux/selector";
+import { useSelector } from "react-redux";
+const Section = ({ data = [], name }) => {
+  const { config } = useSelector(getConfigSelector);
+
   return (
     <Box mb="50px">
       <Flex mb="30px" justify="space-between" align="center">
@@ -19,7 +23,7 @@ const Section = ({ data }) => {
             md: "2xl",
           }}
         >
-          {data?.homeSectionName}
+          {data?.homeSectionName || name}
         </Heading>
         <Link to={`/collection/${data?.homeSectionId}`}>
           <ButtonBg>
@@ -43,16 +47,18 @@ const Section = ({ data }) => {
         keyboard={true}
         modules={[Keyboard]}
       >
-        {data?.recommendContentVOList?.map((data, i) => {
+        {data?.map((data, i) => {
           if (i < 18) {
             return (
               <SwiperSlide key={i}>
                 <Film
-                  category={data.category}
+                  baseUrl={`${config?.images?.base_url}/original/`}
+                  media_type={data.media_type}
                   id={data.id}
-                  score={data.score}
-                  imageUrl={data.imageUrl}
+                  vote_average={data.vote_average}
+                  poster_path={data.poster_path}
                   title={data.title}
+                  name={data.name}
                 />
               </SwiperSlide>
             );

@@ -2,14 +2,19 @@ import React, {memo} from "react";
 import { Flex, Box, Center } from "@chakra-ui/react";
 
 import Film from "../Film/Film";
+import { getConfigSelector } from "../../redux/selector";
+import { useSelector } from "react-redux";
 
 const ListFilmLayout = ({ listFilm }) => {
+  const { config } = useSelector(getConfigSelector);
+
   return (
     <>
     <Flex
       mt="50px"
       display="flex"
       alignItems="flex-start"
+      justifyContent={'center'}
       flexWrap="wrap"
       overflow='hidden'
       mx={{
@@ -33,11 +38,13 @@ const ListFilmLayout = ({ listFilm }) => {
             }}
           >
             <Film
-              category={item?.category ?? item?.domainType}
-              id={item?.id}
-              score={item?.score}
-              imageUrl={item?.imageUrl ?? item?.coverVerticalUrl}
-              title={item?.name ?? item?.title}
+              baseUrl={`${config?.images?.base_url}/original/`}
+              media_type={item.media_type}
+              id={item.id}
+              vote_average={item.vote_average}
+              poster_path={item.poster_path}
+              title={item.title}
+              name={item.name}
             />
           </Box>
         );
