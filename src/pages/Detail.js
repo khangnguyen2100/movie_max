@@ -79,7 +79,7 @@ const Detail = () => {
 
   return (
     <Box mt={"50px"}>
-      {Object?.keys(movieDetail)?.length == 0 ? (
+      {Object?.keys(movieDetail)?.length !== 0 ? (
         <Box>
           {/* info  */}
           <Box
