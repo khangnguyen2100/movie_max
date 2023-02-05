@@ -8,9 +8,7 @@ const initialState = {
 export const movieDetailSlice = createSlice({
   name : 'movieDetail',
   initialState,
-  reducers : {
-
-  },
+  reducers : {},
   extraReducers : (builder) => {
     builder
       .addCase(getMovieDetail.pending, (state) => {
@@ -18,7 +16,7 @@ export const movieDetailSlice = createSlice({
       })
       .addCase(getMovieDetail.fulfilled, (state, action) => {
         state.movieDetail = action.payload
-        state.status = 'idle'
+        state.status = 'done'
       })
   }
 })
@@ -27,6 +25,6 @@ export const getMovieDetail = createAsyncThunk(
   'detail/getMovieDetail',
   async (payload) => {
     let res = await fetchApi(payload)
-    return res.data.data
+    return res.data
   }
 )
