@@ -15,7 +15,8 @@ const Navigation = () => {
         right="0"
         w="full"
         zIndex="100"
-        // boxShadow="rgba(0, 0, 0, 0.15) 0px 5px 15px"
+        boxShadow="rgba(0, 0, 0, 0.15) 0px 5px 15px"
+        bg={'primaryDarkColor'}
       >
         <Box layerStyle={"containerStyles"}>
           <Flex

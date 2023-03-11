@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
       {path.pathname === "/" && <Slider />}
 
       {/* main content */}
-      <Box layerStyle={'containerStyles'}>
+      <Box mt='55px' layerStyle={'containerStyles'}>
         {children}
       </Box>
 
