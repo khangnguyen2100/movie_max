@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Box, Center } from "@chakra-ui/react";
 
-import ButtonLink from "../components/Buttons/ButtonLink";
-import TrendingKeyWord from "../components/Home/TrendingKeyWord";
-import Loading from "../components/Loading/Loading";
-import Section from "../components/Section/Section";
-import { getHomSelector } from "../redux/selector";
-import { fetchHomeApi } from "../services/getHomeSlice";
+import ButtonLink from "src/components/Buttons/ButtonLink";
+import TrendingKeyWord from "src/components/Home/TrendingKeyWord";
+import Loading from "src/components/Loading/Loading";
+import Section from "src/components/Section/Section";
+import { getHomSelector } from "src/redux/selector";
+import { fetchHomeApi } from "src/services/getHomeSlice";
 export const Home = () => {
   const dispatch = useDispatch();
 

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Center } from "@chakra-ui/react";
 
-import { searchFiltersSelector, filtersSelector } from "../redux/selector";
-import { postSearchFiltersApi } from "../services/filtersSlice";
-import FilterContainer from "../components/FilterContainer/FilterContainer";
-import ListFilmLayout from "../components/Layout/ListFilmLayout";
-import Loading from "../components/Loading/Loading";
+import { searchFiltersSelector, filtersSelector } from "src/redux/selector";
+import { postSearchFiltersApi } from "src/services/filtersSlice";
+import FilterContainer from "src/components/FilterContainer/FilterContainer";
+import ListFilmLayout from "src/components/Layout/ListFilmLayout";
+import Loading from "src/components/Loading/Loading";
 
 export const Filters = () => {
   const dispatch = useDispatch();

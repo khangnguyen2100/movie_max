@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import { getHomSelector } from "../redux/selector";
-import ListFilmLayout from "../components/Layout/ListFilmLayout";
+import { getHomSelector } from "src/redux/selector";
+import ListFilmLayout from "src/components/Layout/ListFilmLayout";
 export const Collection = () => {
   const getHomeData = useSelector(getHomSelector);
   const [data, setData] = useState({});

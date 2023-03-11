@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
+import Layout from "src/components/Layout/Layout";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 
-import { MovieDetail, Search, Filters, NotFound, Home, Collection, TvDetail } from "./pages";
+import { Collection, Filters, Home, MovieDetail, NotFound, Search, TvDetail } from "./pages";
 import { getConfig, getGenres } from "./services/";
 function App() {
   const dispatch = useDispatch();

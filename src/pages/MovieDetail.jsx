@@ -9,12 +9,12 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
-import ListFilmLayout from "../components/Layout/ListFilmLayout";
-import Loading from "../components/Loading/Loading";
-import VideoPlayer from "../components/VideoPlayer/VideoPlayer";
+import ListFilmLayout from "src/components/Layout/ListFilmLayout";
+import Loading from "src/components/Loading/Loading";
+import VideoPlayer from "src/components/VideoPlayer/VideoPlayer";
 
-import { movieDetailSelector } from "../redux/selector";
-import { getMovieDetail } from "../services/movieDetailSlice";
+import { movieDetailSelector } from "src/redux/selector";
+import { getMovieDetail } from "src/services/movieDetailSlice";
 
 export const MovieDetail = () => {
   const dispatch = useDispatch();
