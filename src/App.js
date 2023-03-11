@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "src/components/Layout/Layout";
+// import Layout from "./components/Layout/Layout";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-
-
 import { Collection, Filters, Home, MovieDetail, NotFound, Search, TvDetail } from "./pages";
 import { getConfig, getGenres } from "./services/";
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {

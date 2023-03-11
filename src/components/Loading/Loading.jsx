@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import { ThreeDots } from "react-loader-spinner";
-import { colors } from "chakraConfig";
+import { colors } from "src/utils/chakraConfig";
 const Loading = () => {
   return (
     <Box

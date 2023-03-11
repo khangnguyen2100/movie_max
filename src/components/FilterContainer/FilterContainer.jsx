@@ -2,9 +2,9 @@
 import React, { useEffect, memo } from "react";
 import { Box,Tabs,Tab,TabList,TabPanel,TabPanels, } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { colors } from '../'
-import { filtersSlice,getFiltersConfig } from "../../services/filtersSlice";
-import {filtersSelector as filtersSelectorData, filtersConfig} from "../../redux/selector";
+import { colors } from 'src/utils/chakraConfig'
+import { filtersSlice, getFiltersConfig } from "src/services/filtersSlice";
+import {filtersSelector as filtersSelectorData, filtersConfig} from "src/redux/selector";
 
 const FilterContainer = () => {
   const tabActiveBorderBottomColor = "#1A202C";

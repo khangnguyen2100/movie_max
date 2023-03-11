@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import App from "./App";
-import chakraConfig from "chakraConfig"
+import chakraConfig from "src/utils/chakraConfig"
 import store from "src/redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
