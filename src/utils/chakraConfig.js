@@ -2,7 +2,7 @@ import { extendTheme } from "@chakra-ui/react"
 export const colors = {
   primaryColor : "rgba(50, 138, 241, 1)",
   primaryDarkColor :'rgba(21, 31, 50, 1)',
-  secondaryColor : '#F56857',
+  secondaryColor : '#FCE38A',
 
   textColor : '#fff',
   decsColor : "rgba(120, 144, 156,1)",
@@ -38,6 +38,8 @@ const layerStyles = {
 }
 const fonts = {
   body : "'Exo 2', sans-serif",
+  heading : "'Exo 2', sans-serif",
+
 }
 const breakpoints = {
   sm: '30em', // 480px
