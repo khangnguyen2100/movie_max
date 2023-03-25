@@ -1,39 +1,22 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  Box,
-  Flex,
-  Text,
-  Skeleton,
-  Badge,
-  useBreakpointValue,
-} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
+import {
+  Badge, Box,
+  Flex, Skeleton, Text, useBreakpointValue
+} from "@chakra-ui/react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import FilmPreview from "./FilmPreview";
-const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }) => {
+const Film = ({ baseUrl, media_type, id, vote_average, poster_path, title, name }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const skeletonImg = useRef()
-  const [showPreview, setShowPreview] = useState(false);
   const minHeightValue = useBreakpointValue({
     base: "30vh",
     md: "40vh",
     lg: "43vh",
   });
-  const checkDevice = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
 
-  const handleShowPreview = (e) => {
-    e.preventDefault()
-    setShowPreview(true);
-  };
-  const handleClosePreview = () => {
-    setShowPreview(false);
-  };
   const vote_average_rounded = vote_average.toFixed(1);
   return (
     <>
@@ -45,19 +28,19 @@ const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }
           justify="space-between"
           cursor="pointer"
           _hover={{
-            '.film-name' : {
+            '.film-name': {
               color: "primaryColor",
             },
-            '.preview' : {
-              visibility : 'visible',
-              opacity : '1',
-              transform : 'translateY(0)',
-              transition : 'all .25s ease-in-out'
+            '.preview': {
+              visibility: 'visible',
+              opacity: '1',
+              transform: 'translateY(0)',
+              transition: 'all .25s ease-in-out'
 
-            } 
+            }
           }}
         >
-          <Box pos={'relative'}  minH={minHeightValue}>
+          <Box pos={'relative'} minH={minHeightValue}>
             <Skeleton
               isLoaded={imageLoaded}
               style={{
@@ -71,7 +54,7 @@ const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }
               ref={skeletonImg}
             >
               <LazyLoadImage
-                src={baseUrl+poster_path}
+                src={baseUrl + poster_path}
                 effect="blur"
                 style={{
                   borderRadius: "7px",
@@ -83,29 +66,6 @@ const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }
                   skeletonImg.current.children[0].style = ''
                 }}
               />
-              {
-                
-              }
-              <Box
-              className="preview"
-
-              visibility={'hidden'}
-              opacity='0'
-              transition='all .25s ease-in-out'
-              transform={'translateY(100%)'}
-
-              pos="absolute"
-              bottom="0"
-              left="0"
-              right="0"
-              w="full"
-              bg="rgba(14, 23, 37, .7)"
-              p="7px 0 "
-              textAlign={"center"}
-              onClick={(e) => handleShowPreview(e)}
-            >
-              Preview
-            </Box>
             </Skeleton>
             {vote_average && (
               <Box position="absolute" top="10px" right="10px">
@@ -123,7 +83,6 @@ const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }
               </Box>
             )}
           </Box>
-
           <Box w="full" mt="5px">
             <Text
               className="film-name"
@@ -138,14 +97,6 @@ const Film = ({ baseUrl,media_type, id, vote_average, poster_path, title, name }
           </Box>
         </Flex>
       </Link>
-      {showPreview && checkDevice && (
-        <FilmPreview
-          id={id}
-          media_type={media_type}
-          showPreview={showPreview}
-          closePreview={handleClosePreview}
-        />
-      )}
     </>
   );
 };
