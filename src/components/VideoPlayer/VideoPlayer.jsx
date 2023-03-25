@@ -6,7 +6,6 @@ import {
   Embed
 } from "@vime/react";
 import React, { memo } from "react";
-import { useParams } from "react-router-dom";
 import "./index.css";
 function VideoPlayer({embedSrc = ''}) {
   return (
