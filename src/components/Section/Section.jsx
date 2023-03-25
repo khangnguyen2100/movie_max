@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { Fragment, memo } from "react";
 import { Link } from "react-router-dom";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
@@ -10,7 +10,7 @@ import ButtonBg from "../Buttons/ButtonBg";
 import Film from "../Film/Film";
 import { getConfigSelector } from "../../redux/selector";
 import { useSelector } from "react-redux";
-const Section = ({ data = [], name }) => {
+const Section = ({ data = [], name, type }) => {
   const { config } = useSelector(getConfigSelector);
 
   return (
@@ -21,6 +21,7 @@ const Section = ({ data = [], name }) => {
           fontSize={{
             base: "xl",
             md: "2xl",
+            lg: "3xl",
           }}
         >
           {data?.homeSectionName || name}
@@ -50,10 +51,10 @@ const Section = ({ data = [], name }) => {
         {data?.map((data, i) => {
           if (i < 18) {
             return (
-              <SwiperSlide key={i}>
+              <SwiperSlide key={data.id}>
                 <Film
                   baseUrl={`${config?.images?.base_url}/original/`}
-                  media_type={data.media_type}
+                  media_type={type}
                   id={data.id}
                   vote_average={data.vote_average}
                   poster_path={data.poster_path}
@@ -63,6 +64,7 @@ const Section = ({ data = [], name }) => {
               </SwiperSlide>
             );
           }
+          return <Fragment key={data.id || i}></Fragment>;
         })}
       </Swiper>
     </Box>

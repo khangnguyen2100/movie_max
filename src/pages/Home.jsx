@@ -1,41 +1,59 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable array-callback-return */
-import React, { useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Box, Center } from "@chakra-ui/react";
-
-import ButtonLink from "src/components/Buttons/ButtonLink";
-import TrendingKeyWord from "src/components/Home/TrendingKeyWord";
-import Loading from "src/components/Loading/Loading";
 import Section from "src/components/Section/Section";
+import SectionTrending from "src/components/Section/SectionTrending";
+
 import { getHomSelector } from "src/redux/selector";
 import { fetchHomeApi } from "src/services/getHomeSlice";
+
 export const Home = () => {
   const dispatch = useDispatch();
 
-  const { value, status, pageCount } = useSelector(getHomSelector);
-  const handleDispatchAction = () => {
+  const { value, status } = useSelector(getHomSelector);
+  const [trendingInWeek, setTrendingInWeek] = useState(true);
+  
+  useEffect(() => {
+    // get trending
     dispatch(
       fetchHomeApi({
-        path: "trending/all/week",
-        params: { page: pageCount },
+        path: 'trending/all/week',
+        type: 'trending_week'
       })
     );
-  };
-  useEffect(() => {
-    if (Object.keys(value).length === 0) {
-      handleDispatchAction();
-    }
+    dispatch(
+      fetchHomeApi({
+        path: 'trending/all/day',
+        type: 'trending_day'
+      })
+    );
+    // popular movies
+    dispatch(
+      fetchHomeApi({
+        path: "movie/popular",
+        type: 'movie'
+      })
+    );
+    // popular tv
+    dispatch(
+      fetchHomeApi({
+        path: "tv/popular",
+        type: 'tv'
+      })
+    );
   }, []);
-
   return (
     <>
-    {
-      status === 'done' && 
-      <Section data={value} name="Trending" />
-    }
+      {
+        status === 'done' && (
+          <>
+          <SectionTrending data={trendingInWeek ? value.trending_week : value.trending_day} name="Trending" trendingInWeek={trendingInWeek} setTrendingInWeek={setTrendingInWeek} />
+          <Section data={value.movie} name="Popular Movie" type='movie' />
+          <Section data={value.tv} name="Popular Series" type='tv' />
+          </>
+        )
+      }
     </>
   );
 };
