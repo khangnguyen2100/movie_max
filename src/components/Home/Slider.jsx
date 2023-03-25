@@ -4,10 +4,11 @@ import { Box, Center, CircularProgress, CircularProgressLabel, Heading, Icon, Im
 import { motion } from "framer-motion";
 import React, { forwardRef, memo, useEffect, useRef, useState } from "react";
 import { AiFillHeart } from 'react-icons/ai';
+import {BsFillPlayFill} from 'react-icons/bs';
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getConfigSelector, getGenresSelector, getHomSelector } from "src/redux/selector";
-import { fetchHomeApi } from "src/services/getHomeSlice";
+import { getConfigSelector, getGenresSelector, getHomeSliderSelector } from "src/redux/selector";
+import { getHomeSlider } from "src/services/getHomeSlice";
 import { sortByValue } from "src/utils";
 import { Autoplay, EffectCreative, Keyboard, Lazy, Navigation, Pagination } from "swiper";
 import "swiper/css";
@@ -43,28 +44,22 @@ const SliderButton = memo(forwardRef(({ icon, direction = 'left' || 'right' }, r
 }))
 
 const Slider = () => {
-  // fetch data
   const dispatch = useDispatch();
 
   const { genres } = useSelector(getGenresSelector);
-  const { value, status } = useSelector(getHomSelector);
+  const { data, status } = useSelector(getHomeSliderSelector);
   const { config } = useSelector(getConfigSelector);
   let sortByVote
   if (status === 'done') {
-    sortByVote = sortByValue(value, 'vote_average')
+    sortByVote = sortByValue(data, 'vote_average')
   }
-  const handleDispatchAction = () => {
+  useEffect(() => {
     dispatch(
-      fetchHomeApi({
-        path: "trending/all/week",
+      getHomeSlider({
+        path: "trending/all/day",
       })
     );
-  };
-  useEffect(() => {
-    if (Object.keys(value).length === 0) {
-      handleDispatchAction();
-    }
-  }, []);
+  }, [dispatch]);
   // ref for swiper
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -92,7 +87,7 @@ const Slider = () => {
     loop: false,
     rewind: true,
     autoplay: {
-      delay: 5000,
+      delay: 7000,
       disableOnInteraction: false,
     },
     pagination: {},
@@ -129,7 +124,7 @@ const Slider = () => {
           } else {
             subString = subString.slice(0, 25).join(' ') + ' ...'
           }
-          if (i < 6) {
+          if (i < 10) {
             return (
               <SwiperSlide
                 key={i}
@@ -156,6 +151,7 @@ const Slider = () => {
                       overflow="hidden"
                       h="full"
                       w="full"
+                      fallback={<Box bg={'#333'} position='absolute' inset={'0'} />}
                       objectFit="cover"
                       style={{
                         minHeight: "35vh",
@@ -173,7 +169,7 @@ const Slider = () => {
                   {/* name, desc */}
                   <Box maxW={'600px'} pos={'absolute'} top='55%' zIndex={20} left={'130px'} transform='translateY(-50%)'>
                     <motion.div
-                      initial={{opacity: 0, y: 50}}
+                      initial={{ opacity: 0, y: 50 }}
                       animate={i === activeSlide ? 'show' : 'hidden'}
                       transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
                       variants={variants}
@@ -194,7 +190,7 @@ const Slider = () => {
                     </motion.div>
                     {/* description */}
                     <motion.div
-                      initial={{opacity: 0, y: 50}}
+                      initial={{ opacity: 0, y: 50 }}
                       animate={i === activeSlide ? 'show' : 'hidden'}
                       transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
                       variants={variants}
@@ -203,13 +199,16 @@ const Slider = () => {
                     </motion.div>
                     {/* actions */}
                     <motion.div
-                      initial={{opacity: 0, y: 50}}
+                      initial={{ opacity: 0, y: 50 }}
                       animate={i === activeSlide ? 'show' : 'hidden'}
                       transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
                       variants={variants}
                     >
                       <Box display={'flex'} h='55px' mt={'60px'} flexGrow={'1'} alignItems='center' columnGap='4'>
                         <ButtonWhite href={`/${item?.media_type}/${item?.id}`} >
+                          <BsFillPlayFill size={'30px'} style={{
+                            marginRight: '10px'
+                          }} />
                           WATCH NOW
                         </ButtonWhite>
                         <Box display={'flex'} h='full' w='55px' alignItems='center' justifyContent={'center'} rounded='sm' border={'1px solid #fff'} boxShadow='xs'>
