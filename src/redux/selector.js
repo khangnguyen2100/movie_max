@@ -2,6 +2,7 @@
 export const getConfigSelector = (data) => data.getConfig
 export const getGenresSelector = (data) => data.getGenres
 export const getHomSelector = (data) => data.getHome
+export const getHomeSliderSelector = (data) => data.getHome.slider
 
 export const filtersSelector = (data) => data.filters.filtersValue
 export const filtersConfig = (data) => data.filters.filtersConfig
