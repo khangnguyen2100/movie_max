@@ -5,3 +5,5 @@ export * from './NotFound';
 export * from './Search';
 export * from './TvDetail';
 export * from './MovieDetail';
+export * from './Movie';
+export * from './Tv';

@@ -4,7 +4,7 @@ import Layout from "src/components/Layout/Layout";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Collection, Filters, Home, MovieDetail, NotFound, Search, TvDetail } from "./pages";
+import { Collection, Filters, Home, MovieDetail, NotFound, Movie, Tv, Search, TvDetail } from "./pages";
 import { getConfig, getGenres } from "./services/";
 
 function App() {
@@ -36,7 +36,19 @@ function App() {
         <Route exact path="/collection/:homeSectionId" element={<Collection />} ></Route>
         <Route exact path="/filters" element={<Filters />}></Route>
         <Route exact path="/search" element={<Search />}></Route>
+
+        <Route exact path="/movie" element={<Movie />}></Route>
+        <Route exact path="/movie/popular" element={<Movie type='popular' />}></Route>
+        <Route exact path="/movie/now-playing" element={<Movie type='now_playing' />}></Route>
+        <Route exact path="/movie/upcoming" element={<Movie type='upcoming' />}></Route>
+        <Route exact path="/movie/top-rated" element={<Movie type='top_rated' />}></Route>
         <Route exact path="/movie/:id" element={<MovieDetail />}></Route>
+
+        <Route exact path="/tv" element={<Tv />}></Route>
+        <Route exact path="/tv/popular" element={<Tv type='popular' />}></Route>
+        <Route exact path="/tv/airing-today" element={<Tv type='airing_today' />}></Route>
+        <Route exact path="/tv/on-the-air" element={<Tv type='on_the_air' />}></Route>
+        <Route exact path="/tv/top-rated" element={<Tv type='top_rated' />}></Route>
         <Route exact path="/tv/:id" element={<TvDetail />}></Route>
         <Route path='*' exact={true} element={<NotFound />} />
       </Routes>
