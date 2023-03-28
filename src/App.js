@@ -4,7 +4,19 @@ import Layout from "src/components/Layout/Layout";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Collection, Filters, Home, MovieDetail, NotFound, Movie, Tv, Search, TvDetail } from "./pages";
+import {
+  Collection,
+  Filters,
+  Home,
+  MovieDetail,
+  NotFound,
+  Movie,
+  Tv,
+  Search,
+  TvDetail,
+  TrendingWeek,
+  TrendingDay
+} from "./pages";
 import { getConfig, getGenres } from "./services/";
 
 function App() {
@@ -50,6 +62,11 @@ function App() {
         <Route exact path="/tv/on-the-air" element={<Tv type='on_the_air' />}></Route>
         <Route exact path="/tv/top-rated" element={<Tv type='top_rated' />}></Route>
         <Route exact path="/tv/:id" element={<TvDetail />}></Route>
+
+        <Route exact path="/trending/week" element={<TrendingWeek />}></Route>
+        <Route exact path="/trending/day" element={<TrendingDay />}></Route>
+
+
         <Route path='*' exact={true} element={<NotFound />} />
       </Routes>
     </Layout>

@@ -7,3 +7,5 @@ export * from './TvDetail';
 export * from './MovieDetail';
 export * from './Movie';
 export * from './Tv';
+export * from './TreadingWeek';
+export * from './TreadingDay';

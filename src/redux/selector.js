@@ -16,3 +16,5 @@ export const movieMediaSelector = (data) => data.movieMedia
 
 export const getMovieSelector = (data) => data.getMovie
 export const getTvSelector = (data) => data.getTv
+export const getTrendingWeekSelector = (data) => data.getTrending.week
+export const getTrendingDaySelector = (data) => data.getTrending.day

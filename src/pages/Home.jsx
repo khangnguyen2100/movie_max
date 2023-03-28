@@ -49,8 +49,8 @@ export const Home = () => {
         status === 'done' && (
           <>
           <SectionTrending data={trendingInWeek ? value.trending_week : value.trending_day} name="Trending" trendingInWeek={trendingInWeek} setTrendingInWeek={setTrendingInWeek} />
-          <Section data={value.movie} name="Popular Movie" type='movie' />
-          <Section data={value.tv} name="Popular Series" type='tv' />
+          <Section link="/movie/popular" data={value.movie} name="Popular Movie" type='movie' />
+          <Section link="/tv/popular" data={value.tv} name="Popular Series" type='tv' />
           </>
         )
       }

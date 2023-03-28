@@ -10,7 +10,7 @@ import ButtonBg from "../Buttons/ButtonBg";
 import Film from "../Film/Film";
 import { getConfigSelector } from "../../redux/selector";
 import { useSelector } from "react-redux";
-const Section = ({ data = [], name, type }) => {
+const Section = ({ data = [], name, type, link = '' }) => {
   const { config } = useSelector(getConfigSelector);
 
   return (
@@ -26,12 +26,16 @@ const Section = ({ data = [], name, type }) => {
         >
           {data?.homeSectionName || name}
         </Heading>
-        <Link to={`/collection/${data?.homeSectionId}`}>
-          <ButtonBg>
-            More
-            <ArrowForwardIcon ml={2} />
-          </ButtonBg>
-        </Link>
+        {
+          link && (
+            <Link to={link}>
+              <ButtonBg>
+                More
+                <ArrowForwardIcon ml={2} />
+              </ButtonBg>
+            </Link>
+          )
+        }
       </Flex>
 
       <Swiper

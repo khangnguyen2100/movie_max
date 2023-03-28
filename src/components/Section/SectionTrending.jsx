@@ -80,7 +80,7 @@ const SectionTrending = ({ data = [], name, trendingInWeek, setTrendingInWeek })
             </Box>
           </Flex>
         </Flex>
-        <Link to={`/collection/${data?.homeSectionId}`}>
+        <Link to={`/trending/${trendingInWeek ? 'week' : 'day'}`}>
           <ButtonBg>
             More
             <ArrowForwardIcon ml={2} />
