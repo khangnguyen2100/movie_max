@@ -21,7 +21,7 @@ const MenuMobile = ({ navs }) => {
   }, [])
   const variants = {
     open: { opacity: 1, height: 'auto' },
-    closed: { opacity: 0,  height: 0 },
+    closed: { opacity: 0, height: 0 },
   }
   return (
     <>
@@ -70,22 +70,16 @@ const MenuMobile = ({ navs }) => {
                     fontWeight="500"
                     color="textColor"
                     _hover={{ color: "primaryColor" }}
-                    >
-                    {
-                      !nav.subs ? (
-                        <Link onClick={onClose} to={nav.href}>{nav.name}</Link>
-                      ) : (
-                        <Flex cursor={'pointer'} onClick={() => handleClick(index)} align={'center'} columnGap={'2'}>
-                          {nav.name}
-                          <motion.div
-                            animate={activeSubMenuIndex === index ? { rotate: 90 } : { rotate: 0 }}
-                            transition={{ duration: 0.25 }}
-                          >
-                            <ChevronRightIcon boxSize={6} fontWeight='medium' transition={'all .  2s'}/>
-                          </motion.div>
-                        </Flex>
-                      )
-                    }
+                  >
+                    <Flex cursor={'pointer'} onClick={() => handleClick(index)} align={'center'} columnGap={'2'}>
+                      <Link onClick={onClose} to={nav.href}>{nav.name}</Link>
+                      <motion.div
+                        animate={activeSubMenuIndex === index ? { rotate: 90 } : { rotate: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <ChevronRightIcon boxSize={6} fontWeight='medium' transition={'all .  2s'} />
+                      </motion.div>
+                    </Flex>
                   </Box>
                   {
                     nav.subs && (
@@ -98,7 +92,7 @@ const MenuMobile = ({ navs }) => {
                         <Box ml='3' mt='2' mb='5'>
                           {
                             nav.subs.map((sub, index) => (
-                              <Box key={index} w='max-content' color="textColor" _notLast={{marginBottom: '7px'}} _hover={{ color: "primaryColor" }}>
+                              <Box key={index} w='max-content' color="textColor" _notLast={{ marginBottom: '7px' }} _hover={{ color: "primaryColor" }}>
                                 <Link to={sub.href}>{sub.name}</Link>
                               </Box>
                             ))

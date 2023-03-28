@@ -16,22 +16,22 @@ const navs = [
   },
   {
     name: "Movie",
-    href: "/movie",
+    href: "/movie/popular",
     subs: [
       { name: "Popular", href: "/movie/popular" },
-      { name: "Top Rated", href: "/movie/top_rated" },
+      { name: "Now Playing", href: "/movie/now-playing" },
       { name: "Upcoming", href: "/movie/upcoming" },
-      { name: "Now Playing", href: "/movie/now_playing" },
+      { name: "Top Rated", href: "/movie/top-rated" },
     ],
   },
   {
     name: "TV",
-    href: "/tv",
+    href: "/tv/popular",
     subs: [
       { name: "Popular", href: "/tv/popular" },
-      { name: "Top Rated", href: "/tv/top_rated" },
-      { name: "On The Air", href: "/tv/on_the_air" },
-      { name: "Airing Today", href: "/tv/airing_today" },
+      { name: "Top Rated", href: "/tv/top-rated" },
+      { name: "On The Air", href: "/tv/on-the-air" },
+      { name: "Airing Today", href: "/tv/airing-today" },
     ],
   },
   {
@@ -53,15 +53,7 @@ const Menu = () => {
             navs.map((nav, index) => (
               <Box key={index} role={'group'} pos={'relative'}>
                 <Box color="textColor" fontWeight={'bold'} _hover={{ color: "primaryColor" }}>
-                  {
-                    !nav.subs ? (
-                      <Link to={nav.href}>{nav.name}</Link>
-                    ) : (
-                      <Flex align={'center'} columnGap={'1'}>
-                        {nav.name}
-                      </Flex>
-                    )
-                  }
+                  <Link to={nav.href}>{nav.name}</Link>
                 </Box>
                 {
                   nav.subs && (
@@ -70,7 +62,7 @@ const Menu = () => {
                         {
                           nav.subs.map((sub, index) => (
                             <Box key={index} w='max-content' color="textColor" letterSpacing={'1.7'} _hover={{ color: "primaryColor" }}>
-                              <Link to={sub.href}>{sub.name}</Link>
+                              <Link  to={sub.href}>{sub.name}</Link>
                             </Box>
                           ))
                         }
