@@ -17,7 +17,6 @@ const Film = ({ baseUrl, media_type, id, vote_average, poster_path, title, name 
     lg: "43vh",
   });
 
-  const vote_average_rounded = vote_average.toFixed(1);
   return (
     <>
       <Link
@@ -67,7 +66,7 @@ const Film = ({ baseUrl, media_type, id, vote_average, poster_path, title, name 
                 }}
               />
             </Skeleton>
-            {vote_average && (
+            {Boolean(vote_average) && (
               <Box position="absolute" top="10px" right="10px">
                 <Badge
                   bg={"bgvote_averageColor"}
@@ -77,7 +76,7 @@ const Film = ({ baseUrl, media_type, id, vote_average, poster_path, title, name 
                   alignItems="center"
                   color="#fff"
                 >
-                  {vote_average_rounded}
+                  {vote_average.toFixed(1)}
                   <StarIcon color="starColor" ml="3px" />
                 </Badge>
               </Box>
