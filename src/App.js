@@ -46,8 +46,6 @@ function App() {
     <Layout>
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
-        <Route exact path="/collection/:homeSectionId" element={<Collection />} ></Route>
-        <Route exact path="/filters" element={<Filters />}></Route>
         <Route exact path="/search" element={<Search />}></Route>
 
         <Route exact path="/movie" element={<Movie />}></Route>
