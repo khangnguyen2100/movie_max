@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Flex, Text, Heading } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-const NotFound = () => {
+export const NotFound = () => {
   return (
     <Flex direction={'column'} align='center' justify={'center'} mt='50px'>
       <Heading
@@ -36,5 +36,3 @@ const NotFound = () => {
     </Flex>
   )
 }
-
-export default NotFound

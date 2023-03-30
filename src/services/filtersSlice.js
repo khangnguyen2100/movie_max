@@ -13,7 +13,7 @@ const initialState = {
   searchData : {},
   status : 'idle'
 }
-const filtersSlice = createSlice({
+export const filtersSlice = createSlice({
   name : 'filters',
   initialState,
   reducers  : {
@@ -43,7 +43,6 @@ const filtersSlice = createSlice({
       })
   }
 })
-export default filtersSlice
 
 export const getFiltersConfig = createAsyncThunk(
   'filters/getFiltersConfig',

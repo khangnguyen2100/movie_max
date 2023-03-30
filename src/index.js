@@ -4,16 +4,15 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import "@fontsource/poppins";
 import App from "./App";
-import themeConfig from "./utils/themeConfig";
-import store from "./redux/store";
+import chakraConfig from "src/utils/chakraConfig"
+import store from "src/redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <ChakraProvider resetCSS={true} theme={themeConfig}>
+      <ChakraProvider resetCSS={true} theme={chakraConfig}>
         <App />
       </ChakraProvider>
     </BrowserRouter>

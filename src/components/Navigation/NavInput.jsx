@@ -1,62 +1,59 @@
-import React, { useState, useRef, memo, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Box, Input } from "@chakra-ui/react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Search2Icon } from "@chakra-ui/icons";
+import { Box, Input } from "@chakra-ui/react";
+import React, { memo, useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
-  searchTopKeyWords,
-  searchKeyWords,
-} from "../../services/searchKeyWordsSlice";
+  multiSearch
+} from "../../services/searchSlice";
 import SearchTopKeyWordsList from "./SearchTopKeyWordsList";
 
 const NavInput = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const searchInput = useRef(null);
-
+  const [, startTransition] = useTransition()
   const [searchText, setSearchText] = useState('');
+  const [queryText, setQueryText] = useState('')
   const [isShow, setIsShow] = useState(false);
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value);
-    dispatch(
-      searchTopKeyWords({
-        path: "search/searchLenovo",
-        params: {
-          searchKeyWord: e.target.value,
-          size: 10,
-        },
-      })
-    );
+    startTransition(() => {
+      setQueryText(e.target.value)
+      dispatch(
+        multiSearch({
+          path: "search/multi",
+          params: {
+            query: e.target.value,
+          },
+        })
+      );
+      setIsShow(true)
+    })
   };
   useEffect(() => {
     setIsShow(document.activeElement.tagName === "INPUT")
   }, [document.activeElement.tagName])
-  
-  
-  const handleSearchWithKeyWord = (text = searchText) => {
-    text = text.replaceAll("<em>", "");
-    text = text.replaceAll("</em>", "");
 
-    dispatch(
-      searchKeyWords({
-        path: "search/v1/searchWithKeyWord",
-        params: {
-          searchKeyWord: text,
-          size: 18,
-          sort: "",
-          searchType: "",
-        },
-      })
-    );
-    
-    // navigate to search page
-    setSearchText(text);
-    navigate('/search')
-    searchInput.current.blur();
-    setIsShow(false)
-  };
+  const handleSearchWithKeyWord = useCallback((text = queryText) => {
+    if (text) {
+      dispatch(
+        multiSearch({
+          path: "search/multi",
+          params: {
+            query: text,
+          },
+        })
+      );
+      // navigate to search page
+      setSearchText(text);
+      navigate(`/search`)
+      searchInput.current.blur();
+      setIsShow(false)
+    }
+  }, [queryText]);
 
   const handlePressEnter = (e) => {
     if (e.key === "Enter") {
@@ -76,6 +73,7 @@ const NavInput = () => {
       <Box position="relative" overflow="hidden">
         <Input
           variant="flushed"
+          autoCapitalize="off"
           position="relative"
           focusBorderColor="primaryColor"
           placeholder="Search by name"
@@ -94,6 +92,7 @@ const NavInput = () => {
           pl="5px"
           onKeyDown={(e) => handlePressEnter(e)}
         />
+        {/* search icon */}
         <Box
           position="absolute"
           right="15px"
