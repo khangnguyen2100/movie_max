@@ -12,7 +12,7 @@ export const multiSearchSelector = (data) => data.multiSearch.value
 export const searchLeaderBoardSelector = (data) => data.searchLeaderBoard
 
 export const movieDetailSelector = (data) => data.movieDetail
-export const movieMediaSelector = (data) => data.movieMedia
+export const tvDetailSelector = (data) => data.tvDetail
 
 export const getMovieSelector = (data) => data.getMovie
 export const getTvSelector = (data) => data.getTv

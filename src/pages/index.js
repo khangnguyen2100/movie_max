@@ -9,3 +9,4 @@ export * from './Movie';
 export * from './Tv';
 export * from './TreadingWeek';
 export * from './TreadingDay';
+export * from './TvSeason';

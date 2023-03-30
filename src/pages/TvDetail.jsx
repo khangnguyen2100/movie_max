@@ -1,6 +1,6 @@
 
-import { Box, Center, Heading, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { Box, Center, Heading, Image, Text } from "@chakra-ui/react";
+import React, { useCallback, useEffect, useRef } from "react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Autoplay, Keyboard, Lazy, Pagination } from "swiper";
@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { StarIcon } from "@chakra-ui/icons";
 import {
   Breadcrumb,
-  BreadcrumbItem, Button, Flex, Stack, Tab, TabList, TabPanel, TabPanels, Tabs
+  BreadcrumbItem, Button, Flex, Stack
 } from "@chakra-ui/react";
 
 import { Link, useParams } from "react-router-dom";
@@ -20,39 +20,44 @@ import moment from "moment/moment";
 import ReactPlayer from "react-player";
 import ListFilmLayout from "../components/Layout/ListFilmLayout";
 import Loading from "../components/Loading/Loading";
-import { movieDetailSelector, getConfigSelector } from "../redux/selector";
-import { getMovieDetail } from "../services/movieDetailSlice";
+import { getConfigSelector, tvDetailSelector } from "../redux/selector";
+import { getTvDetail } from "../services";
 
 export const TvDetail = () => {
   const dispatch = useDispatch();
   const player = useRef();
   const params = useParams();
   const { id } = params;
-  const [focusImage, setFocusImage] = useState({});
-  const { movieDetail, status } = useSelector(movieDetailSelector);
+  const { tvDetail, status } = useSelector(tvDetailSelector);
   const { config } = useSelector(getConfigSelector);
-  const dateFormated = moment(movieDetail?.release_date).format("YYYY");
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const dateFormated = moment(tvDetail?.release_date).format("YYYY");
+
+  const handleFindTrailerKey = useCallback(() => {
+    // get youtube trailer key of not have trailer get first video
+    const youtubeVideos = tvDetail?.videos?.results?.filter(
+      (item) => item?.site === "YouTube"
+    );
+    const trailer = youtubeVideos?.find(
+      (item) => item?.type === "Trailer"
+    );
+    if (trailer) return trailer.key;
+    return youtubeVideos?.videos?.results[0]?.key;
+  }, [tvDetail]);
+  const trailerKey = handleFindTrailerKey();
+
   useEffect(() => {
     dispatch(
-      getMovieDetail({
-        path: `tv/${id}?append_to_response=videos,images,recommendations,reviews,similar`,
+      getTvDetail({
+        path: `tv/${id}?append_to_response=videos,recommendations,reviews,similar`,
         params,
       })
     );
   }, [id]);
   useEffect(() => {
-  }, [movieDetail]);
-  const handleFoundImage = (image, type) => {
-    setFocusImage({
-      data: image,
-      type,
-    });
-    onOpen();
-  }
+  }, [tvDetail]);
   return (
     <Box mt={"50px"}>
-      {status === 'done' ? (
+      {(tvDetail?.seasons?.length > 0 && status === 'done') ? (
         <Box>
           {/* info  */}
           <Box
@@ -69,7 +74,8 @@ export const TvDetail = () => {
                 separator={"  -  "}
                 fontSize={{
                   base: "xl",
-                  lg: "2xl",
+                  md: "2xl",
+                  lg: "4xl",
                 }}
                 color="textColor"
                 fontWeight="bold"
@@ -77,7 +83,7 @@ export const TvDetail = () => {
               >
                 <BreadcrumbItem>
                   <Text textTransform="uppercase" letterSpacing="2px">
-                    {movieDetail?.title || movieDetail?.name}
+                    {tvDetail?.title || tvDetail?.name}
                   </Text>
                 </BreadcrumbItem>
                 <BreadcrumbItem>
@@ -92,7 +98,7 @@ export const TvDetail = () => {
                   fontWeight="bold"
                   fontSize={"18px"}
                 >
-                  {movieDetail?.vote_average.toFixed(1)}
+                  {tvDetail?.vote_average.toFixed(1)}
                 </Text>
                 <StarIcon color="yellow" ml="5px" />
               </Flex>
@@ -105,7 +111,7 @@ export const TvDetail = () => {
               }}
               fontWeight="medium"
             >
-              <Text>{movieDetail?.overview}</Text>
+              <Text>{tvDetail?.overview}</Text>
             </Box>
             {/* area & genres */}
             <Box
@@ -126,7 +132,7 @@ export const TvDetail = () => {
                   alignItems="center"
                   justifyContent="flex-start"
                 >
-                  {movieDetail?.spoken_languages?.map((item, i) => (
+                  {tvDetail?.spoken_languages?.map((item, i) => (
                     <BreadcrumbItem key={i}>
                       <Box>{item?.name}</Box>
                     </BreadcrumbItem>
@@ -138,7 +144,7 @@ export const TvDetail = () => {
                   Types :
                 </Text>
                 <Breadcrumb separator="," spacing="3px">
-                  {movieDetail?.genres?.map((item) => {
+                  {tvDetail?.genres?.map((item) => {
                     return (
                       <BreadcrumbItem key={item.id}>
                         <Link to={`genres/${item.id}`}>{item.name}</Link>
@@ -149,187 +155,30 @@ export const TvDetail = () => {
               </Flex>
             </Box>
           </Box>
-          {/* Images, videos */}
-          <Tabs my={'50px'} isFitted variant='enclosed' defaultIndex={1}>
-            <TabList mb='1em'>
-              <Tab fontWeight={'600'}>Videos ({movieDetail?.videos?.results?.length})</Tab>
-              <Tab fontWeight={'600'}>Backdrops ({movieDetail?.images?.backdrops?.length})</Tab>
-              <Tab fontWeight={'600'}>Posters ({movieDetail?.images?.posters?.length})</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel h={'80vh'}>
-                {/* Videos */}
-                <Swiper
-                  spaceBetween={10}
-                  slidesPerView={1}
-                  speed={700}
-                  keyboard={true}
-                  loop={true}
-                  autoplay={{
-                    delay: 4000,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    dynamicBullets: true,
-                  }}
-                  lazy={true}
-                  modules={[Autoplay, Pagination, Keyboard, Lazy]}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  {
-                    movieDetail?.videos?.results?.map((item, i) => {
-                      return (
-                        <SwiperSlide
-                          key={i}
-                          style={{
-                            position: "relative",
-                            height: "100%",
-                            width: "100%",
-                          }}
-                        >
-                          <ReactPlayer
-                            ref={player}
-                            url={`https://www.youtube.com/watch?v=${item.key}`}
-                            width='100%'
-                            height='100%'
-                            controls
-                          />
-                        </SwiperSlide>
-                      );
-                    })
-                  }
-                </Swiper>
-              </TabPanel>
-              <TabPanel h={'80vh'}>
-                {/* Backdrops */}
-                <Swiper
-                  spaceBetween={10}
-                  slidesPerView={1}
-                  speed={700}
-                  keyboard={true}
-                  loop={true}
-                  autoplay={{
-                    delay: 4000,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    dynamicBullets: true,
-                  }}
-                  lazy={true}
-                  modules={[Autoplay, Pagination, Keyboard, Lazy]}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  {
-                    movieDetail?.images?.backdrops?.map((item, i) => {
-                      return (
-                        <SwiperSlide
-                          key={i}
-                          style={{
-                            position: "relative",
-                            height: "100%",
-                            width: "100%",
-                          }}
-                        >
-                          <Image
-                            onClick={() => handleFoundImage(item, 'backdrops')}
-                            src={`${config?.images?.base_url}/original/${item.file_path}`}
-                            alt={item.file_path}
-                            width='100%'
-                            objectFit={'cover'}
-                            height='100%'
-                          />
-                        </SwiperSlide>
-                      );
-                    })
-                  }
-                </Swiper>
-              </TabPanel>
-              <TabPanel h={'80vh'}>
-                {/* Posters */}
-                <Swiper
-                  spaceBetween={10}
-                  slidesPerView={3}
-                  speed={700}
-                  keyboard={true}
-                  loop={true}
-                  autoplay={{
-                    delay: 4000,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    dynamicBullets: true,
-                  }}
-                  lazy={true}
-                  modules={[Autoplay, Pagination, Keyboard, Lazy]}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  {
-                    movieDetail?.images?.posters?.map((item, i) => {
-                      return (
-                        <SwiperSlide
-                          key={i}
-                          style={{
-                            position: "relative",
-                            height: "100%",
-                            width: "100%",
-                          }}
-                        >
-                          <Image
-                            onClick={() => handleFoundImage(item, 'posters')}
-                            src={`${config?.images?.base_url}/original/${item.file_path}`}
-                            alt={item.file_path}
-                            aspectRatio={item.aspect_ratio}
-                            width='100%'
-                            objectFit={'cover'}
-                            height='100%'
-                          />
-                        </SwiperSlide>
-                      );
-                    })
-                  }
-                </Swiper>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-          {/* Images modal */}
-          {focusImage.data && (
-            <Modal
-              isCentered
-              allowPinchZoom
-              preserveScrollBarGap
-              onClose={onClose}
-              isOpen={isOpen}
-              motionPreset='slideInBottom'
-              size={focusImage.type === 'backdrops' ? '6xl' : 'md'}
-            >
-              <ModalOverlay />
-              <ModalContent>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Image
-                    src={`${config?.images?.base_url}/original/${focusImage.data.file_path}`}
-                    alt={focusImage.data.file_path}
-                    aspectRatio={focusImage.data.aspect_ratio}
-                    objectFit={'cover'}
-                  />
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-          )}
-
+          {/* Trailer */}
+          <Box h='80vh' overflow={'hidden'} w='full' mb='50px'>
+            {
+              trailerKey ? (
+                <ReactPlayer
+                  ref={player}
+                  url={`https://www.youtube.com/watch?v=${handleFindTrailerKey()}`}
+                  width='100%'
+                  height='100%'
+                  controls
+                />
+              ) : (
+                <Image
+                  src={`${config?.images?.base_url}/original/${tvDetail?.backdrop_path}`}
+                  alt={`${tvDetail?.title || tvDetail?.name} poster`}
+                  objectFit='cover'
+                />
+              )
+            }
+          </Box>
           {/* season */}
           <Box>
-            {movieDetail?.seasons?.map((item, i) => {
-              const seasonDateFormated = moment(item?.air_date).format("MMMM DD, YYYY");
+            {tvDetail?.seasons?.map((item, i) => {
+              const seasonDateFormated = moment(item?.air_date).format("MMMM Do YYYY");
               return (
                 <Flex
                   key={i}
@@ -352,27 +201,24 @@ export const TvDetail = () => {
 
                   <Stack flexGrow={1} minH={'300px'}>
                     <Stack flexGrow={1} mt='4'>
-                      <Heading 
-                        _hover={{
-                          color: 'primaryColor',
-                        }} 
+                      <Heading
                         size='lg' display={'inline-block'} mb='2'
                       >
-                        {item.name}
+                        {item.name} - {seasonDateFormated || ''}
                       </Heading>
                       <Heading size={'md'} mb={'6'}>
-                        {item?.air_date} | {item.episode_count} episodes
+                        {item.episode_count} episodes
                       </Heading>
                       <Text flexGrow={1} h='full' py='2' color={'decsColor'}>
-                        {item.overview || `${item.name} of ${movieDetail?.title || movieDetail?.name} premiered on ${seasonDateFormated || 'N/A'}`}
+                        {item.overview || `${item.name} of ${tvDetail?.title || tvDetail?.name} premiered on ${seasonDateFormated || 'N/A'}`}
                       </Text>
                     </Stack>
                     <Box display={'block'}>
-                      <Button mb='6' variant='solid' colorScheme='blue'>
-                        <Link to={`/season/${item?.season_number || i + 1}/episode/1`}>
+                      <Link to={`/tv/${id}/season/${item.season_number}`}>
+                        <Button mb='6' variant='solid' colorScheme='blue'>
                           Watch Now
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </Box>
                   </Stack>
                 </Flex>
@@ -381,12 +227,12 @@ export const TvDetail = () => {
           </Box>
 
           {/* likeList */}
-          {movieDetail?.recommendations?.results?.length > 0 && (
+          {tvDetail?.recommendations?.results?.length > 0 && (
             <Box>
               <Heading fontSize="2xl" mt="50px">
                 You may Like
               </Heading>
-              <ListFilmLayout listFilm={movieDetail?.recommendations?.results} />
+              <ListFilmLayout listFilm={tvDetail?.recommendations?.results} />
             </Box>
           )}
 

@@ -9,9 +9,9 @@ import {
   getTvSlice,
   searchLeaderBoardSlice,
   movieDetailSlice,
-  movieMediaSlice,
   getGenresSlice,
   getTrendingSlice,
+  tvDetailSlice,
 } from "../services";
 const store = configureStore({
   reducer: {
@@ -22,7 +22,7 @@ const store = configureStore({
     multiSearch: multiSearchSlice.reducer,
     searchLeaderBoard: searchLeaderBoardSlice.reducer,
     movieDetail: movieDetailSlice.reducer,
-    movieMedia: movieMediaSlice.reducer,
+    tvDetail: tvDetailSlice.reducer,
     getMovie: getMovieSlice.reducer,
     getTv: getTvSlice.reducer,
     getTrending: getTrendingSlice.reducer,

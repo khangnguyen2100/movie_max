@@ -15,7 +15,8 @@ import {
   Search,
   TvDetail,
   TrendingWeek,
-  TrendingDay
+  TrendingDay,
+  TvSeason,
 } from "./pages";
 import { getConfig, getGenres } from "./services/";
 
@@ -62,6 +63,7 @@ function App() {
         <Route exact path="/tv/on-the-air" element={<Tv type='on_the_air' />}></Route>
         <Route exact path="/tv/top-rated" element={<Tv type='top_rated' />}></Route>
         <Route exact path="/tv/:id" element={<TvDetail />}></Route>
+        <Route exact path="/tv/:id/season/:seasonId" element={<TvSeason />}></Route>
 
         <Route exact path="/trending/week" element={<TrendingWeek />}></Route>
         <Route exact path="/trending/day" element={<TrendingDay />}></Route>

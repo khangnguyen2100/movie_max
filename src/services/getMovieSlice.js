@@ -37,7 +37,7 @@ export const getMovieSlice = createSlice({
 })
 
 export const fetchMoviesData = createAsyncThunk(
-  'geMovie',
+  'getMovie',
   async (data) => {
     let res = await fetchApi(data)
     return res.data.results
