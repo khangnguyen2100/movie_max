@@ -34,14 +34,6 @@ const navs = [
       { name: "Airing Today", href: "/tv/airing-today" },
     ],
   },
-  {
-    name: "People",
-    href: "/people",
-  },
-  {
-    name: "Find your movie",
-    href: "/filters",
-  },
 ]
 const Menu = () => {
   return (
