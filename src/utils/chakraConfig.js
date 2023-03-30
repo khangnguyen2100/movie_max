@@ -18,9 +18,9 @@ const layerStyles = {
   containerStyles : {
     px: {
       base: "10px",
-      md: "0px",
+      lg: "0px",
     },
-    maxW : "1200px",
+    maxW : "1100px",
     mx : "auto",
     w : "full",
   },
