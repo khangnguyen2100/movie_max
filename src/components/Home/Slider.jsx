@@ -4,7 +4,7 @@ import { Box, Center, CircularProgress, CircularProgressLabel, Heading, Icon, Im
 import { motion } from "framer-motion";
 import React, { forwardRef, memo, useEffect, useRef, useState } from "react";
 import { AiFillHeart } from 'react-icons/ai';
-import {BsFillPlayFill} from 'react-icons/bs';
+import { BsFillPlayFill } from 'react-icons/bs';
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfigSelector, getGenresSelector, getHomeSliderSelector } from "src/redux/selector";
@@ -25,6 +25,7 @@ const SliderButton = memo(forwardRef(({ icon, direction = 'left' || 'right' }, r
       cursor="pointer"
       position="absolute"
       top="50%"
+      display={{ base: "none", md: "block" }}
       transform="translateY(-50%)"
       {
       ...direction === 'left' ? { left: "0" } : { right: "0" }
@@ -77,6 +78,7 @@ const Slider = () => {
       prevEl: prevRef.current,
       nextEl: nextRef.current,
     },
+    allowTouchMove: true,
     onInit: (swiper) => {
       swiper.params.navigation.prevEl = prevRef.current;
       swiper.params.navigation.nextEl = nextRef.current;
@@ -167,7 +169,13 @@ const Slider = () => {
                     />
                   </Box>
                   {/* name, desc */}
-                  <Box maxW={'600px'} pos={'absolute'} top='55%' zIndex={20} left={'130px'} transform='translateY(-50%)'>
+                  <Box
+                    pos={'absolute'} maxW={'600px'} zIndex={20} transform={'translateY(-50%)'}
+                    mx={{ base: '10px', md: 'unset' }}
+                    top={{ base: '40%', md: '55%', }}
+                    left={{ base: '0', md: '130px', }}
+                    right={{ base: '0', md: 'unset', }}
+                  >
                     <motion.div
                       initial={{ opacity: 0, y: 50 }}
                       animate={i === activeSlide ? 'show' : 'hidden'}
@@ -180,7 +188,7 @@ const Slider = () => {
                         color="#fff"
                         fontWeight="extrabold"
                         fontSize={{
-                          base: "xl",
+                          base: "3xl",
                           md: "4xl",
                           lg: "60px",
                         }}
@@ -195,7 +203,10 @@ const Slider = () => {
                       transition={{ duration: 0.5, delay: 0.7, ease: "easeOut" }}
                       variants={variants}
                     >
-                      <Text my='20px' fontSize={'18px'}>{subString}</Text>
+                      <Text my='20px' fontSize={{
+                        base: '15px',
+                        md: '18px',
+                      }}>{subString}</Text>
                     </motion.div>
                     {/* actions */}
                     <motion.div
@@ -204,25 +215,34 @@ const Slider = () => {
                       transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
                       variants={variants}
                     >
-                      <Box display={'flex'} h='55px' mt={'60px'} flexGrow={'1'} alignItems='center' columnGap='4'>
+                      <Box
+                        display={'flex'} h='55px' flexGrow={'1'} alignItems='center' columnGap='4'
+                        mt={{ base: '30%', md: '60px' }}
+                      >
                         <ButtonWhite href={`/${item?.media_type}/${item?.id}`} >
                           <BsFillPlayFill size={'30px'} style={{
                             marginRight: '10px'
                           }} />
                           WATCH NOW
                         </ButtonWhite>
-                        <Box display={'flex'} h='full' w='55px' alignItems='center' justifyContent={'center'} rounded='sm' border={'1px solid #fff'} boxShadow='xs'>
+                        {/* <Box display={'flex'} h='full' w='55px' alignItems='center' justifyContent={'center'} rounded='sm' border={'1px solid #fff'} boxShadow='xs'>
                           <AiFillHeart color="#fff" size={'30px'} />
-                        </Box>
-                        <CircularProgress value={item?.vote_average.toFixed(2) * 10 || 0} color='primaryColor'>
+                        </Box> */}
+                        <CircularProgress ml='20px' value={item?.vote_average.toFixed(2) * 10 || 0} color='primaryColor'>
                           <CircularProgressLabel fontWeight={'semibold'}>{item?.vote_average.toFixed(2)}</CircularProgressLabel>
                         </CircularProgress>
                       </Box>
                     </motion.div>
-
                   </Box>
                   {/* actor,... */}
-                  <Box maxW={'500px'} pos={'absolute'} bottom='50px' zIndex={20} right={'130px'}>
+                  <Box maxW={'500px'} pos={'absolute'} bottom='50px' zIndex={20} right={{
+                    base: '0',
+                    md: '130px',
+                  }}
+                    mx={{
+                      base: '10px',
+                      md: 'unset',
+                    }} >
                     <motion.div
                       animate={i === activeSlide ? 'show' : 'hidden'}
                       transition={{ duration: 0.7, delay: 1.2, ease: "easeOut" }}
