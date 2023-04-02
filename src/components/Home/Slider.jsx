@@ -188,7 +188,7 @@ const Slider = () => {
                         color="#fff"
                         fontWeight="extrabold"
                         fontSize={{
-                          base: "3xl",
+                          base: "4xl",
                           md: "4xl",
                           lg: "60px",
                         }}
@@ -216,7 +216,8 @@ const Slider = () => {
                       variants={variants}
                     >
                       <Box
-                        display={'flex'} h='55px' flexGrow={'1'} alignItems='center' columnGap='4'
+                        display={'flex'} flexGrow={'1'} alignItems='center' columnGap='4'
+                        h={{base: '45px' , md: '55px'}} 
                         mt={{ base: '30%', md: '60px' }}
                       >
                         <ButtonWhite href={`/${item?.media_type}/${item?.id}`} >

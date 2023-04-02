@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const ButtonWhite = ({ href = "/", children, customStyle }) => {
   return (
     <Box
-      display='block' h='full' maxW={{base: '270px', md:'300px'}} w={'full'} px={4}
+      display='block' h='full' maxW={{base: '250px', md:'300px'}} w={'full'} px={4}
       bgColor={'transparent'} color={'#fff'} border={'1px solid rgba(50, 138, 241, 1)'}
       textTransform={'uppercase'} fontSize={'18px'} textAlign={'center'} fontWeight='bold' letterSpacing='3px'
       rounded='sm' cursor='pointer'
