@@ -6,7 +6,6 @@ import {
   Embed
 } from "@vime/react";
 import React, { memo } from "react";
-import "./index.css";
 function VideoPlayer({embedSrc = ''}) {
   return (
     <Box position={"relative"} w='full' h={'full'}>
