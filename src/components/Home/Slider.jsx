@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Center, CircularProgress, CircularProgressLabel, Heading, Icon, Image, Text } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from "@chakra-ui/icons";
+import { Box, Center, CircularProgress, CircularProgressLabel, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import React, { forwardRef, memo, useEffect, useRef, useState } from "react";
 import { AiFillHeart } from 'react-icons/ai';
@@ -172,7 +172,7 @@ const Slider = () => {
                   <Box
                     pos={'absolute'} maxW={'600px'} zIndex={20} transform={'translateY(-50%)'}
                     mx={{ base: '10px', md: 'unset' }}
-                    top={{ base: '40%', md: '55%', }}
+                    top={{ base: '47%', md: '55%', }}
                     left={{ base: '0', md: '130px', }}
                     right={{ base: '0', md: 'unset', }}
                   >
@@ -217,7 +217,7 @@ const Slider = () => {
                     >
                       <Box
                         display={'flex'} flexGrow={'1'} alignItems='center' columnGap='4'
-                        h={{base: '45px' , md: '55px'}} 
+                        h={{ base: '45px', md: '55px' }}
                         mt={{ base: '30%', md: '60px' }}
                       >
                         <ButtonWhite href={`/${item?.media_type}/${item?.id}`} >
@@ -229,9 +229,6 @@ const Slider = () => {
                         {/* <Box display={'flex'} h='full' w='55px' alignItems='center' justifyContent={'center'} rounded='sm' border={'1px solid #fff'} boxShadow='xs'>
                           <AiFillHeart color="#fff" size={'30px'} />
                         </Box> */}
-                        <CircularProgress ml='20px' value={item?.vote_average.toFixed(2) * 10 || 0} color='primaryColor'>
-                          <CircularProgressLabel fontWeight={'semibold'}>{item?.vote_average.toFixed(2)}</CircularProgressLabel>
-                        </CircularProgress>
                       </Box>
                     </motion.div>
                   </Box>
@@ -267,7 +264,15 @@ const Slider = () => {
                       </Box>
                     </motion.div>
                   </Box>
-
+                  {/* score */}
+                  <Box pos='absolute' top='7%' right='4%' display={'flex'} alignItems={'center'} justifyContent={'center'}>
+                    <Text
+                      fontSize={{ base: '20px', md: '24px' }} color='#fff' fontWeight={'bold'}
+                    >
+                      {item?.vote_average.toFixed(1)}
+                    </Text>
+                    <StarIcon boxSize={{ base: "5", md: '7' }} color="starColor" ml="8px" />
+                  </Box>
                 </Center>
               </SwiperSlide>
             );
