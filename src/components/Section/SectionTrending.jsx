@@ -44,6 +44,7 @@ const SectionTrending = ({ data = [], name, trendingInWeek, setTrendingInWeek })
           {/* change time */}
           <Flex 
             overflow={'hidden'}
+            display={{base: 'none', md: 'flex'}}
             rounded='3xl'
             border={'rgba(50, 138, 241, 1) 1px solid'} 
             justify={'space-between'} align='center'

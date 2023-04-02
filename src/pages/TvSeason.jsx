@@ -56,8 +56,7 @@ export const TvSeason = () => {
               <Breadcrumb
                 separator={"  -  "}
                 fontSize={{
-                  base: "xl",
-                  md: "2xl",
+                  base: "2xl",
                   lg: "4xl",
                 }}
                 color="textColor"
@@ -74,7 +73,7 @@ export const TvSeason = () => {
                 </BreadcrumbItem>
               </Breadcrumb>
               <Flex align={'center'} columnGap='4'>
-                <Text fontSize={'20px'} color='white' fontWeight={'600'}>
+                <Text fontSize={{ base: '17px', md: "20px" }} color='white' fontWeight={'600'}>
                   <span style={{
                     fontWeight: 'bold',
                     color: 'rgba(120, 144, 156,1)'
@@ -111,7 +110,7 @@ export const TvSeason = () => {
           <Box
             maxW="100%"
             w="full"
-            h={'80vh'}
+            h={{ base: '60vw', md: '80vh' }}
             overflow="hidden"
             boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
             rounded="5px"
@@ -150,7 +149,13 @@ export const TvSeason = () => {
                 <Heading mb={8} fontSize="2xl" mt="50px">
                   Episodes
                 </Heading>
-                <Grid display={'grid'} templateColumns={`repeat(${seasonDetail?.episodes.length > 30 ? '5' : '4'}, 1fr)`} align={'center'} wrap='wrap' gap={'5'}>
+                <Grid
+                  display={'grid'} align={'center'} wrap='wrap' gap={'5'}
+                  templateColumns={{
+                    base: 'repeat(2, 1fr)',
+                    md: `repeat(${seasonDetail?.episodes.length > 30 ? '5' : '4'}, 1fr)`
+                  }}
+                >
                   {
                     seasonDetail?.episodes?.map((item, i) => {
                       return (
@@ -174,11 +179,16 @@ export const TvSeason = () => {
                             <Text
                               w={'max-content'}
                               whiteSpace={'nowrap'}
+                              fontSize={{
+                                base: '14px',
+                                md: '16px'
+                              }}
                               overflow={'hidden'}
                               textOverflow={'ellipsis'}
                             >
                               <span style={{
                                 fontWeight: '700',
+                                fontSize: '18px',
                               }}>{i + 1}. </span>
                               {item?.name}
                             </Text>

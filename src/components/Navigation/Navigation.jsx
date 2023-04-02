@@ -7,34 +7,8 @@ import {
 } from "@chakra-ui/react";
 import MenuMobile from "./MenuMobile";
 import NavInput from "./NavInput";
+import { navs } from "../Constans";
 
-
-const navs = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "Movie",
-    href: "/movie/popular",
-    subs: [
-      { name: "Popular", href: "/movie/popular" },
-      { name: "Now Playing", href: "/movie/now-playing" },
-      { name: "Upcoming", href: "/movie/upcoming" },
-      { name: "Top Rated", href: "/movie/top-rated" },
-    ],
-  },
-  {
-    name: "TV",
-    href: "/tv/popular",
-    subs: [
-      { name: "Popular", href: "/tv/popular" },
-      { name: "Top Rated", href: "/tv/top-rated" },
-      { name: "On The Air", href: "/tv/on-the-air" },
-      { name: "Airing Today", href: "/tv/airing-today" },
-    ],
-  },
-]
 const Menu = () => {
   return (
     <Flex alignItems={"center"}>
@@ -43,18 +17,21 @@ const Menu = () => {
         <HStack spacing="30px" display={{ base: "none", lg: "flex" }}>
           {
             navs.map((nav, index) => (
-              <Box key={index} role={'group'} pos={'relative'}>
+              <Box key={index} role={'group'} transition={'all 0.3s ease'} pos={'relative'}>
                 <Box color="textColor" fontWeight={'bold'} _hover={{ color: "primaryColor" }}>
                   <Link to={nav.href}>{nav.name}</Link>
                 </Box>
                 {
                   nav.subs && (
                     <>
-                      <Box pos='absolute' top={'25px'} left='0' bg={'#384e7b'} p='10px' pr='30px' rounded={'md'} display={'none'} _groupHover={{ display: 'block' }}>
+                      <Box pos='absolute' top={'25px'} left='0' bg={'#384e7b'} pl='10px' pr='30px' h='0' rounded={'md'}  opacity={0}
+                        _groupHover={{ h: '120px', opacity: '1', paddingY: '10px' }}
+                        transition={'all 0.3s ease'}
+                      >
                         {
                           nav.subs.map((sub, index) => (
-                            <Box key={index} w='max-content' color="textColor" letterSpacing={'1.7'} _hover={{ color: "primaryColor" }}>
-                              <Link  to={sub.href}>{sub.name}</Link>
+                            <Box key={index} w='max-content' fontWeight={'semibold'} transition={'.1s all'} color="textColor" letterSpacing={'1.7'} _hover={{ color: "primaryColor" }}>
+                              <Link to={sub.href}>{sub.name}</Link>
                             </Box>
                           ))
                         }
