@@ -25,10 +25,7 @@ const ScrollToTopBtn = () =>{
   },[])
   return (
     <Button
-      position='fixed' bottom='30px' right={{
-        base : '20px',
-        md : '30px'
-      }}
+      position='fixed' bottom='50px' right={'30px'}
       zIndex='100'
       style={{
         visibility: visible ? 'visible' : 'hidden',
