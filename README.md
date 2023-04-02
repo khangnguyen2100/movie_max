@@ -1,15 +1,13 @@
 # MovieMax
 
-Film personal project with React 
-Resource from [Loklok](https://loklok.com/) API
-
+Film personal project with **React**, Charka-Ui, Redux-Toolkit,...
 ## Link demo
 
 MovieMax : [https://moviemax123.netlify.app/](https://moviemax123.netlify.app/)
 
-## Movie sources
-
-API leak from [Loklok](https://loklok.com/) App.
+## Movie Resource
+Resource from [themoviedb](https://developers.themoviedb.org/) API
+and [2embed](https://2embed.org/) for streaming
 
 ## Main technology used
 
@@ -23,6 +21,6 @@ API leak from [Loklok](https://loklok.com/) App.
 
 ## Features
 
-- Full HD movies with subtitles in many languages
-- Search by name
-- Filter by region, categories, periods,...
+- Streaming movies and series
+- Latest movies and series update
+- Search movies and series
