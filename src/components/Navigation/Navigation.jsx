@@ -7,34 +7,8 @@ import {
 } from "@chakra-ui/react";
 import MenuMobile from "./MenuMobile";
 import NavInput from "./NavInput";
+import { navs } from "../Constans";
 
-
-const navs = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "Movie",
-    href: "/movie/popular",
-    subs: [
-      { name: "Popular", href: "/movie/popular" },
-      { name: "Now Playing", href: "/movie/now-playing" },
-      { name: "Upcoming", href: "/movie/upcoming" },
-      { name: "Top Rated", href: "/movie/top-rated" },
-    ],
-  },
-  {
-    name: "TV",
-    href: "/tv/popular",
-    subs: [
-      { name: "Popular", href: "/tv/popular" },
-      { name: "Top Rated", href: "/tv/top-rated" },
-      { name: "On The Air", href: "/tv/on-the-air" },
-      { name: "Airing Today", href: "/tv/airing-today" },
-    ],
-  },
-]
 const Menu = () => {
   return (
     <Flex alignItems={"center"}>
@@ -54,7 +28,7 @@ const Menu = () => {
                         {
                           nav.subs.map((sub, index) => (
                             <Box key={index} w='max-content' color="textColor" letterSpacing={'1.7'} _hover={{ color: "primaryColor" }}>
-                              <Link  to={sub.href}>{sub.name}</Link>
+                              <Link to={sub.href}>{sub.name}</Link>
                             </Box>
                           ))
                         }
