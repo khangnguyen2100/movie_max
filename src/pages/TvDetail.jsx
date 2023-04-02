@@ -73,8 +73,7 @@ export const TvDetail = () => {
               <Breadcrumb
                 separator={"  -  "}
                 fontSize={{
-                  base: "xl",
-                  md: "2xl",
+                  base: "2xl",
                   lg: "4xl",
                 }}
                 color="textColor"
@@ -156,7 +155,10 @@ export const TvDetail = () => {
             </Box>
           </Box>
           {/* Trailer */}
-          <Box h='80vh' overflow={'hidden'} w='full' mb='50px'>
+          <Box 
+          overflow={'hidden'} w='full' mb='50px'
+          h={{base: '60vw', md: '80vh'}}
+          >
             {
               trailerKey ? (
                 <ReactPlayer
@@ -187,6 +189,7 @@ export const TvDetail = () => {
                   variant='outline'
                   borderWidth='1px'
                   borderRadius='lg'
+                  p='4'
                   mb='8'
                   alignItems={'start'}
                   columnGap='8'
@@ -194,6 +197,7 @@ export const TvDetail = () => {
                 >
                   <Image
                     objectFit='cover'
+                    display={{ base: 'none', md: 'block' }}
                     maxW={{ base: '100%', sm: '200px' }}
                     src={`${config?.images?.base_url}/original/${item.poster_path}`}
                     alt={`${item.name} poster`}
