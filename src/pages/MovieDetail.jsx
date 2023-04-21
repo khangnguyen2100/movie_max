@@ -148,7 +148,14 @@ export const MovieDetail = () => {
               embedSrc={`https://www.2embed.to/embed/tmdb/movie?id=${id}`}
             />
           </Box>
+<div>
 
+         <iframe id="iframe" src="https://www.2embed.to/embed/tmdb/movie?id=640146" webkitallowfullscreen="true" mozallowfullscreen="true" width="100%" height="100%" frameborder="0"></iframe>
+         
+          <Button variant="success" > <a href={`https://shrinke.me/${id} ` } target="_blank"> 
+        
+      </a>Download</Button>{' '}
+      </div>
 
           {/* likeList */}
           {movieDetail?.recommendations?.results?.length > 0 && (
