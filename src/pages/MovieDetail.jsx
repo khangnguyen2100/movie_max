@@ -145,7 +145,7 @@ export const MovieDetail = () => {
             ref={player}
           >
             <VideoPlayer
-              embedSrc={`https://www.2embed.to/embed/tmdb/movie?id=${id}`}
+              embedSrc={`https://www.2embed.cc/embed/tmdb/movie?id=${id}`}
             />
           </Box>
 
